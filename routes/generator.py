@@ -2,9 +2,9 @@ from flask import Blueprint
 from flask_restx import Resource, Namespace, reqparse
 
 from app import logger
-from utils import constants
+from utils.constants import GENERATOR_ROUTE_PREFIX
 
-bp = Blueprint('generator', __name__, url_prefix=constants.API_ROUTE_PREFIX)
+bp = Blueprint('generator', __name__, url_prefix=GENERATOR_ROUTE_PREFIX)
 nms = Namespace('Generator')
 base_parser = reqparse.RequestParser(bundle_errors=True)
 

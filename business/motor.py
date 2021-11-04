@@ -13,7 +13,7 @@ class MotorBusiness(BaseBusiness):
         return {
             'settings': settings,
             'polar': polar_params,
-            'rect': rect_params
+            'rect': rect_params,
         }
 
     def __calculate_polar_params(self, params: dict):
@@ -22,7 +22,7 @@ class MotorBusiness(BaseBusiness):
         polar_params['jXsIa'] = self.__calculate_reactive_power(params=params, polar_params=polar_params)
         return polar_params
 
-    def __calculate_rectangular_params(self, settings: dict,polar_params: dict):
+    def __calculate_rectangular_params(self, settings: dict, polar_params: dict):
         return {
             'Vt': complex(settings['Vt'], 0),
             'Ia': rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1])),
@@ -33,13 +33,12 @@ class MotorBusiness(BaseBusiness):
         }
 
     def __calculate_line_current(self, settings: dict):
-        Il = settings['load'] + settings['losses'] / (
-                    sqrt(3) * settings['Vt'] * settings['Fp']) * 1000
-        return self.round(Il)
+        Pin = settings['load'] + settings['losses']
+        return Pin * 1000 / (sqrt(3) * settings['Vt'] * settings['Fp'])
 
     def __calculate_armor_current(self, params: dict):
-        current_module = self.round(params['Il'] / sqrt(3))
-        current_phase = self.round(self.degree(acos(params['Fp'])))
+        current_module = params['Il'] / sqrt(3)
+        current_phase = self.degree(acos(params['Fp']))
         if params['lagging']:
             current_phase *= -1
         return (current_module, current_phase)
@@ -50,8 +49,8 @@ class MotorBusiness(BaseBusiness):
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
         Ea = Vt - jXs * Ia
 
-        voltage_module = self.round(abs(Ea))
-        voltage_phase = self.round(self.degree(phase(Ea)))
+        voltage_module = abs(Ea)
+        voltage_phase = self.degree(phase(Ea))
         return (voltage_module, voltage_phase)
 
     def __calculate_reactive_power(self, params: dict, polar_params: dict):
@@ -59,6 +58,6 @@ class MotorBusiness(BaseBusiness):
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
         jXsIa = jXs * Ia
 
-        reactive_power_module = self.round(abs(jXsIa))
-        reactive_power_phase = self.round(self.degree(phase(jXsIa)))
+        reactive_power_module = abs(jXsIa)
+        reactive_power_phase = self.degree(phase(jXsIa))
         return (reactive_power_module, reactive_power_phase)
