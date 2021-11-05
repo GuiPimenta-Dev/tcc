@@ -5,6 +5,7 @@ from math import pi
 class BaseBusiness(ABC):
 
 
+
     @abstractmethod
     def treat_params(self, params: dict):
         pass
@@ -13,7 +14,7 @@ class BaseBusiness(ABC):
     def get_coords(self, params: dict):
         return {
             'coords': self.__get_coords(params=params['rect']),
-            'labels': self.__get_labels(params=params['polar'])
+            'labels': self.__get_labels(params=params['polar']),
         }
 
 

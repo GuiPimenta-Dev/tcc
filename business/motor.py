@@ -1,12 +1,13 @@
 from cmath import rect, phase
 from math import sqrt, acos
 
-from .base.base_business import BaseBusiness
+from .base.base import BaseBusiness
 
 
 class MotorBusiness(BaseBusiness):
     def treat_params(self, settings):
-        settings['load'] = settings['load'] * 0.746
+        settings['load'] = settings['load'] * 0.746 + settings['losses']
+        settings['Z'] = settings['Xs'] + settings['Ra']
         settings['Il'] = self.__calculate_line_current(settings=settings)
         polar_params = self.__calculate_polar_params(settings)
         rect_params = self.__calculate_rectangular_params(settings=settings, polar_params=polar_params)
@@ -18,7 +19,7 @@ class MotorBusiness(BaseBusiness):
 
     def __calculate_polar_params(self, params: dict):
         polar_params = {'Vt': (params['Vt'], 0), 'Ia': self.__calculate_armor_current(params=params)}
-        polar_params['Ea'] = self.__calculate_armor_voltage(params=params, polar_params=polar_params)
+        polar_params['Ea'] = self._calculate_armor_voltage(params=params, polar_params=polar_params)
         polar_params['jXsIa'] = self.__calculate_reactive_power(params=params, polar_params=polar_params)
         return polar_params
 
@@ -33,7 +34,7 @@ class MotorBusiness(BaseBusiness):
         }
 
     def __calculate_line_current(self, settings: dict):
-        Pin = settings['load'] + settings['losses']
+        Pin = settings['load']
         return Pin * 1000 / (sqrt(3) * settings['Vt'] * settings['Fp'])
 
     def __calculate_armor_current(self, params: dict):
@@ -43,9 +44,9 @@ class MotorBusiness(BaseBusiness):
             current_phase *= -1
         return (current_module, current_phase)
 
-    def __calculate_armor_voltage(self, params: dict, polar_params: dict):
+    def _calculate_armor_voltage(self, params: dict, polar_params: dict):
         Vt = rect(params['Vt'], self.rad(0))
-        jXs = rect(params['Xs'], self.rad(90))
+        jXs = rect(params['Z'], self.rad(90))
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
         Ea = Vt - jXs * Ia
 

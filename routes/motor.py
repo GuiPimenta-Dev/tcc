@@ -21,6 +21,11 @@ motor_parser.add_argument('Ra', required=False, type=float, location='json', def
 motor_parser.add_argument('load', required=False, type=float, location='json', default=15)
 motor_parser.add_argument('losses', required=False, type=float, location='json', default=2.5)
 
+
+load_parser = reqparse.RequestParser(bundle_errors=True)
+load_parser.add_argument('load', required=False, type=float, location='form', default=30)
+
+
 class BaseMotor(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -46,13 +51,14 @@ class Settings(BaseMotor):
 
 @nms.route('/load')
 class Load(BaseMotor):
-    @nms.expect(motor_parser)
+    @nms.expect(load_parser)
     @nms.response(200, 'Success')
     @nms.response(400, 'Bad Request')
     def put(self):
-        args = motor_parser.parse_args()
+        load = load_parser.parse_args()['load']
         try:
             #TODO Create Load Service
+            response = self.motor.update_load(load=load)
             return str(self.motor.voltage)
 
         except Exception as e:

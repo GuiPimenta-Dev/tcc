@@ -1,4 +1,4 @@
-from .base.base_business import BaseBusiness
+from business.base.base import BaseBusiness
 
 class GeneratorBusiness(BaseBusiness):
     pass

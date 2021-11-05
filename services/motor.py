@@ -14,3 +14,8 @@ class MotorService(MotorBusiness):
 
         return motor_informations
 
+    def update_load(self, load: float):
+        settings, polar_params, rect_params = self.load.values()
+        load = load * 0.746 + settings['losses']
+        settings['load'] = load
+        pass
