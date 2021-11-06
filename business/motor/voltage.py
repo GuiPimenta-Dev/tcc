@@ -1,22 +1,14 @@
-from cmath import rect, phase, polar
-from math import asin
+from math import sin
 
 from .base import MotorBaseBusiness
 
 
-class Load(MotorBaseBusiness):
-
-    def load_update(self, params: dict):
+class Voltage(MotorBaseBusiness):
+    def voltage_update(self, params: dict, voltage: float):
         settings, polar_params, _ = params.values()
-        phase = (settings['load'] * abs(settings['Z']) * 1000) / (3 * settings['Vt'] * polar_params['Ea'][0])
+        phase = self.__calculate_ea_phase(old_voltage=polar_params['Ea'], voltage=voltage)
 
-        if phase > 1:
-            y = int(phase)
-            phase = phase - y
-
-        phase = self.degree(self.rad(-1 * self.degree(asin(phase))))
-
-        polar_params['Ea'] = (params['polar']['Ea'][0], phase)
+        polar_params['Ea'] = (voltage, phase)
         rect_params = self.rectangular_params(settings=settings, polar_params=polar_params)
         polar_params['Ia'] = self.update_ia(settings=settings, rect_params=rect_params)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
@@ -26,3 +18,6 @@ class Load(MotorBaseBusiness):
             'rect': self.rectangular_params(settings=settings, polar_params=polar_params)
         }
         return self.get_coords(params=params)
+
+    def __calculate_ea_phase(self, old_voltage: tuple, voltage: float):
+        return self.degree((old_voltage[0] / voltage) * sin(self.rad(old_voltage[1])))

@@ -8,6 +8,10 @@ bp = Blueprint('motor', __name__, url_prefix=MOTOR_ROUTE_PREFIX)
 nms = Namespace('Motor')
 
 motor_parser = reqparse.RequestParser(bundle_errors=True)
+load_parser = motor_parser.copy()
+voltage_parser = motor_parser.copy()
+power_factor_parser = motor_parser.copy()
+
 motor_parser.add_argument('VtN', required=False, type=float, location='json')
 motor_parser.add_argument('SN', required=False, type=float, location='json')
 motor_parser.add_argument('FpN', required=False, type=float, location='json', default=0.8)
@@ -21,12 +25,11 @@ motor_parser.add_argument('Ra', required=False, type=float, location='json', def
 motor_parser.add_argument('load', required=False, type=float, location='json', default=15)
 motor_parser.add_argument('losses', required=False, type=float, location='json', default=2.5)
 
+load_parser.add_argument('load', required=False, type=float, location='json', default=30)
 
-load_parser = reqparse.RequestParser(bundle_errors=True)
-load_parser.add_argument('load', required=False, type=float, location='form', default=30)
+voltage_parser.add_argument('Ea', required=False, type=float, location='json', default=227.5)
 
-power_factor = reqparse.RequestParser(bundle_errors=True)
-power_factor.add_argument('Fp', required=False, type=float, location='form', default=1)
+power_factor_parser.add_argument('Fp', required=False, type=float, location='json', default=1)
 
 
 class BaseMotor(Resource):
@@ -46,11 +49,12 @@ class Settings(BaseMotor):
         args = motor_parser.parse_args()
         try:
             self.create_motor(args=args)
-            return self.motor.initial_coords
+            return self.motor.settings_coords
 
         except Exception as e:
             logger.info(str(e))
             raise
+
 
 @nms.route('/load')
 class Load(BaseMotor):
@@ -66,13 +70,29 @@ class Load(BaseMotor):
             logger.info(str(e))
             raise
 
-@nms.route('/power_factor')
-class PowerFactor(BaseMotor):
-    @nms.expect(power_factor)
+
+@nms.route('/voltage')
+class Voltage(BaseMotor):
+    @nms.expect(voltage_parser)
     @nms.response(200, 'Success')
     @nms.response(400, 'Bad Request')
     def put(self):
-        fp = power_factor.parse_args()['Fp']
+        ea = voltage_parser.parse_args()['Ea']
+        try:
+            return self.motor.update_ea(voltage=ea)
+
+        except Exception as e:
+            logger.info(str(e))
+            raise
+
+
+@nms.route('/power_factor')
+class PowerFactor(BaseMotor):
+    @nms.expect(power_factor_parser)
+    @nms.response(200, 'Success')
+    @nms.response(400, 'Bad Request')
+    def put(self):
+        fp = power_factor_parser.parse_args()['Fp']
         try:
             return self.motor.update_fp(power_factor=fp)
 

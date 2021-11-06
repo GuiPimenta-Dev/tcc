@@ -5,7 +5,7 @@ from .base import MotorBaseBusiness
 
 class PowerFactor(MotorBaseBusiness):
 
-    def fp_update(self, params: dict):
+    def power_factor_update(self, params: dict):
         settings, polar_params, rect_params = params.values()
         phase = self.degree(abs(acos(settings['Fp'])))
         if settings['lagging']:
