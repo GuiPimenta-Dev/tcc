@@ -1,15 +1,12 @@
-from abc import ABC, abstractmethod
+from cmath import rect
 from math import pi
 
 
-class BaseBusiness(ABC):
+class BaseBusiness:
 
-
-
-    @abstractmethod
-    def treat_params(self, params: dict):
-        pass
-
+    # @abstractmethod
+    # def treat_params(self, params: dict):
+    #     pass
 
     def get_coords(self, params: dict):
         return {
@@ -17,6 +14,15 @@ class BaseBusiness(ABC):
             'labels': self.__get_labels(params=params['polar']),
         }
 
+    def rectangular_params(self, settings: dict, polar_params: dict):
+        return {
+            'Vt': complex(settings['Vt'], 0),
+            'Ia': rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1])),
+            'Ea': rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1])),
+            'jXsIa': rect(
+                polar_params['jXsIa'][0], self.rad(polar_params['jXsIa'][1])
+            ),
+        }
 
     def __get_coords(self, params: dict):
         return {
@@ -26,8 +32,7 @@ class BaseBusiness(ABC):
             'jXsIa': (self.round(params['jXsIa'].real), self.round(params['jXsIa'].imag)),
         }
 
-
-    def __get_labels(self,params: dict):
+    def __get_labels(self, params: dict):
         return {
             'Vt': f'{self.round(params["Vt"][0])} ∠ {self.round(params["Vt"][1])}°',
             'Ia': f'{self.round(params["Ia"][0])} ∠ {self.round(params["Ia"][1])}°',
@@ -46,4 +51,3 @@ class BaseBusiness(ABC):
     @staticmethod
     def rad(x: float):
         return (x * pi) / 180
-

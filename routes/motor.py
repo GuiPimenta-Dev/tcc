@@ -25,6 +25,9 @@ motor_parser.add_argument('losses', required=False, type=float, location='json',
 load_parser = reqparse.RequestParser(bundle_errors=True)
 load_parser.add_argument('load', required=False, type=float, location='form', default=30)
 
+power_factor = reqparse.RequestParser(bundle_errors=True)
+power_factor.add_argument('Fp', required=False, type=float, location='form', default=1)
+
 
 class BaseMotor(Resource):
     def __init__(self, *args, **kwargs):
@@ -57,10 +60,22 @@ class Load(BaseMotor):
     def put(self):
         load = load_parser.parse_args()['load']
         try:
-            #TODO Improove load method
             return self.motor.update_load(load=load)
 
         except Exception as e:
             logger.info(str(e))
             raise
 
+@nms.route('/power_factor')
+class PowerFactor(BaseMotor):
+    @nms.expect(power_factor)
+    @nms.response(200, 'Success')
+    @nms.response(400, 'Bad Request')
+    def put(self):
+        fp = power_factor.parse_args()['Fp']
+        try:
+            return self.motor.update_fp(power_factor=fp)
+
+        except Exception as e:
+            logger.info(str(e))
+            raise

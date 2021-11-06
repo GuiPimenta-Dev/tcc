@@ -1,4 +1,4 @@
-from business.motor import MotorBusiness
+from business.Motor import MotorBusiness
 
 
 class MotorService(MotorBusiness):
@@ -16,4 +16,8 @@ class MotorService(MotorBusiness):
 
     def update_load(self, load: float):
         self.load['settings']['load'] = load * 0.746 + self.load['settings']['losses']
-        return self.ea_phase_from_load_update(params=self.load)
+        return self.load_update(params=self.load)
+
+    def update_fp(self, power_factor: float):
+        self.power_factor['settings']['Fp'] = power_factor
+        return self.fp_update(params=self.power_factor)
