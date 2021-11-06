@@ -57,9 +57,8 @@ class Load(BaseMotor):
     def put(self):
         load = load_parser.parse_args()['load']
         try:
-            #TODO Create Load Service
-            response = self.motor.update_load(load=load)
-            return str(self.motor.voltage)
+            #TODO Improove load method
+            return self.motor.update_load(load=load)
 
         except Exception as e:
             logger.info(str(e))

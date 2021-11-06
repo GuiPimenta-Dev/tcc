@@ -15,7 +15,5 @@ class MotorService(MotorBusiness):
         return motor_informations
 
     def update_load(self, load: float):
-        settings, polar_params, rect_params = self.load.values()
-        load = load * 0.746 + settings['losses']
-        settings['load'] = load
-        pass
+        self.load['settings']['load'] = load * 0.746 + self.load['settings']['losses']
+        return self.ea_phase_from_load_update(params=self.load)
