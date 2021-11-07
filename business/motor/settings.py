@@ -17,8 +17,7 @@ class Settings(MotorBaseBusiness):
         }
 
     def __calculate_il(self, settings: dict):
-        Pin = settings['load']
-        return Pin * 1000 / (sqrt(3) * settings['Vt'] * settings['Fp'])
+        return settings['load'] * 1000 / (sqrt(3) * settings['Vt'] * settings['Fp'])
 
     def __polar_params(self, settings: dict):
         polar_params = {'Vt': (settings['Vt'], 0), 'Ia': self.calculate_ia(settings=settings)}
