@@ -3,7 +3,7 @@ from business.Motor import MotorBusiness
 
 class MotorService(MotorBusiness):
     def __init__(self, params: dict):
-        self.settings = self.load = self.voltage = self.power_factor = self.treat_params(params)
+        self.settings = self.load = self.voltage = self.power_factor = self.create_motor(params)
         self.settings_coords = self.get_coords(self.settings)
 
     def __repr__(self):

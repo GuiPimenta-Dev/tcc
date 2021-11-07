@@ -1,6 +1,6 @@
 from cmath import acos
 
-from .base import MotorBaseBusiness
+from business.base.motor import MotorBaseBusiness
 
 
 class PowerFactor(MotorBaseBusiness):

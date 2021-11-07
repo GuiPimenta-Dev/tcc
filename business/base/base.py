@@ -4,10 +4,6 @@ from math import pi
 
 class BaseBusiness:
 
-    # @abstractmethod
-    # def treat_params(self, params: dict):
-    #     pass
-
     def get_coords(self, params: dict):
         return {
             'coords': self.__get_coords(params=params['rect']),

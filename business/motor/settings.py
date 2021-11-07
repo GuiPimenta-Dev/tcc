@@ -1,11 +1,10 @@
-from cmath import rect, phase
-from math import sqrt, acos
+from math import sqrt
 
-from .base import MotorBaseBusiness
+from business.base.motor import MotorBaseBusiness
 
 
 class Settings(MotorBaseBusiness):
-    def treat_params(self, settings):
+    def create_motor(self, settings):
         settings['load'] = settings['load'] * 0.746 + settings['losses']
         settings['Z'] = complex(settings['Ra'], settings['Xs'])
         settings['Il'] = self.__calculate_il(settings=settings)

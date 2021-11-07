@@ -1,6 +1,6 @@
 from math import sin
 
-from .base import MotorBaseBusiness
+from business.base.motor import MotorBaseBusiness
 
 
 class Voltage(MotorBaseBusiness):
