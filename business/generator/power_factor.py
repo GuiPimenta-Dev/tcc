@@ -1,9 +1,9 @@
 from cmath import acos
 
-from business.base.motor import MotorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class PowerFactor(MotorBaseBusiness):
+class PowerFactor(GeneratorBaseBusiness):
 
     def power_factor_update(self, params: dict):
         settings, polar_params, rect_params = params.values()
@@ -13,7 +13,6 @@ class PowerFactor(MotorBaseBusiness):
 
         polar_params['Ia'] = (polar_params['Ia'][0], phase)
         polar_params['Ea'] = self.calculate_ea(settings=settings, polar_params=polar_params)
-        polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
 
         params = {

@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from flask_restx import Resource, Namespace, reqparse
-from services.motor import MotorService
+
 from app import logger
+from services.motor import MotorService
 from utils.constants import MOTOR_ROUTE_PREFIX
 
 bp = Blueprint('motor', __name__, url_prefix=MOTOR_ROUTE_PREFIX)
@@ -20,6 +21,7 @@ motor_parser.add_argument('Ia', required=False, type=float, location='json')
 motor_parser.add_argument('S', required=False, type=float, location='json', default=45)
 motor_parser.add_argument('Fp', required=False, type=float, location='json', default=0.85)
 motor_parser.add_argument('lagging', required=False, type=bool, location='json', default=True)
+motor_parser.add_argument('delta', required=False, type=bool, location='json', default=True)
 motor_parser.add_argument('Xs', required=False, type=float, location='json', default=2.5)
 motor_parser.add_argument('Ra', required=False, type=float, location='json', default=0)
 motor_parser.add_argument('load', required=False, type=float, location='json', default=15)

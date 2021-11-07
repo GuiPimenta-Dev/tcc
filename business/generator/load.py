@@ -1,9 +1,9 @@
 from math import asin
 
-from business.base.motor import MotorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class Load(MotorBaseBusiness):
+class Load(GeneratorBaseBusiness):
 
     def load_update(self, params: dict):
         settings, polar_params, _ = params.values()

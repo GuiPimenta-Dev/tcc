@@ -1,20 +1,14 @@
 from math import sqrt
 
-from business.base.motor import MotorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class Settings(MotorBaseBusiness):
-    def create_motor(self, settings: dict):
-        settings['load'] = settings['load'] * 0.746 + settings['losses']
+class Settings(GeneratorBaseBusiness):
+    def create_generator(self, settings: dict):
+        settings['Ia'] = self.__calculate_ia(settings=settings)
         settings = self.calculate_impedance(settings=settings)
-        settings['Il'] = self.__calculate_il(settings=settings)
         polar_params = self.__polar_params(settings)
-        rect_params = self.rectangular_params(settings=settings, polar_params=polar_params)
-        return {
-            'settings': settings,
-            'polar': polar_params,
-            'rect': rect_params,
-        }
+        pass
 
     def __polar_params(self, settings: dict):
         polar_params = {'Vt': (settings['Vt'], 0), 'Ia': self.calculate_ia(settings=settings)}
@@ -24,5 +18,9 @@ class Settings(MotorBaseBusiness):
         return polar_params
 
     @staticmethod
-    def __calculate_il(settings: dict):
-        return settings['load'] * 1000 / (sqrt(3) * settings['Vt'] * settings['Fp'])
+    def __calculate_ia(settings: dict):
+        Ia = settings['Il']
+        if settings['delta']:
+            Ia = Ia / sqrt(3)
+
+        return Ia
