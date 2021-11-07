@@ -16,4 +16,5 @@ class GeneratorService(GeneratorBusiness):
         pass
 
     def update_fp(self, power_factor: float):
-        pass
+        self.power_factor['settings']['Fp'] = power_factor
+        return self.power_factor_update(params=self.power_factor)

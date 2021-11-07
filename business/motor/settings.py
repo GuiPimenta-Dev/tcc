@@ -9,7 +9,7 @@ class Settings(MotorBaseBusiness):
         settings = self.calculate_impedance(settings=settings)
         settings['Il'] = self.__calculate_il(settings=settings)
         polar_params = self.__polar_params(settings)
-        rect_params = self.rectangular_params(settings=settings, polar_params=polar_params)
+        rect_params = self.rectangular_params(polar_params=polar_params)
         return {
             'settings': settings,
             'polar': polar_params,

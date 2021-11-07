@@ -18,6 +18,6 @@ class PowerFactor(MotorBaseBusiness):
 
         params = {
             'polar': polar_params,
-            'rect': self.rectangular_params(settings=settings, polar_params=polar_params)
+            'rect': self.rectangular_params(polar_params=polar_params)
         }
         return self.get_coords(params=params)

@@ -1,6 +1,5 @@
 from cmath import rect, phase
-from math import sqrt, acos
-from math import pi
+from math import pi, sqrt, acos
 
 
 class BaseBusiness:
@@ -11,9 +10,9 @@ class BaseBusiness:
             'labels': self.__get_labels(params=params['polar']),
         }
 
-    def rectangular_params(self, settings: dict, polar_params: dict):
+    def rectangular_params(self, polar_params: dict):
         return {
-            'Vt': complex(settings['Vt'], 0),
+            'Vt': rect(polar_params['Vt'][0], self.rad(polar_params['Vt'][1])),
             'Ia': rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1])),
             'Ea': rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1])),
             'RaIa': rect(polar_params['RaIa'][0], self.rad(polar_params['RaIa'][1])),

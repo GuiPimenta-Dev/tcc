@@ -9,13 +9,13 @@ class Voltage(GeneratorBaseBusiness):
         phase = self.__calculate_ea_phase(settings_voltage=settings_voltage, voltage=voltage)
 
         polar_params['Ea'] = (voltage, phase)
-        rect_params = self.rectangular_params(settings=settings, polar_params=polar_params)
+        rect_params = self.rectangular_params(polar_params=polar_params)
         polar_params['Ia'] = self.update_ia(settings=settings, rect_params=rect_params)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
 
         params = {
             'polar': polar_params,
-            'rect': self.rectangular_params(settings=settings, polar_params=polar_params)
+            'rect': self.rectangular_params(polar_params=polar_params)
         }
         return self.get_coords(params=params)
 
