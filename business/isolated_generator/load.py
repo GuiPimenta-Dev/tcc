@@ -1,17 +1,17 @@
-from cmath import phase, rect
+from cmath import rect
 
-from business.base.generator import GeneratorBaseBusiness
+from business.base.isolated_generator import IsolatedGeneratorBaseBusiness
 
 
-class Load(GeneratorBaseBusiness):
+class Load(IsolatedGeneratorBaseBusiness):
 
     def load_update(self, params: dict):
         settings, polar_params, _ = params.values()
 
-        polar_params['Ia'] = self.__update_ia(settings=settings, polar_params=polar_params)
+        polar_params['Ia'] = self._update_ia(settings=settings, polar_params=polar_params)
         polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
-        polar_params['Vt'] = self.calculate_connected_vt(settings=settings, polar_params=polar_params)
+        polar_params['Vt'] = self.__calculate_isolated_vt(settings=settings, polar_params=polar_params)
 
         params = {
             'polar': polar_params,
@@ -19,14 +19,14 @@ class Load(GeneratorBaseBusiness):
         }
         return self.get_coords(params=params)
 
-    def __update_ia(self, settings: dict, polar_params: dict):
-        return (settings['Il'], polar_params['Ia'][1])
 
-    def calculate_connected_vt(self, settings: dict, polar_params: dict):
+    def __calculate_isolated_vt(self, settings: dict, polar_params: dict):
         Ea = rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1]))
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
         Vt = Ea - settings['Ra'] * Ia - settings['Xs'] * Ia
 
         voltage_module = abs(Vt)
-        voltage_phase = self.degree(phase(Vt))
-        return (voltage_module, voltage_phase)
+        return (voltage_module, 0)
+
+
+

@@ -1,7 +1,7 @@
 from copy import deepcopy
-from business.Generator import GeneratorBusiness
+from business.IsolatedGenerator import IsolatedGenerator
 
-class GeneratorService(GeneratorBusiness):
+class IsolatedGeneratorService(IsolatedGenerator):
     def __init__(self, params: dict):
         self.settings = self.create_generator(params)
         self.load = deepcopy(self.settings)
@@ -12,7 +12,6 @@ class GeneratorService(GeneratorBusiness):
     def update_load(self, load: float):
         self.load['settings']['Il'] = load
         return self.load_update(params=self.load)
-
 
     def update_ea(self, voltage: float):
         pass

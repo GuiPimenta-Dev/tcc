@@ -4,5 +4,5 @@ from .motor.settings import Settings
 from .motor.voltage import Voltage
 
 
-class MotorBusiness(Settings, Load, Voltage, PowerFactor):
+class Motor(Settings, Load, Voltage, PowerFactor):
     pass

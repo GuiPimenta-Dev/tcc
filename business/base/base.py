@@ -41,9 +41,9 @@ class BaseBusiness:
 
     def calculate_ia(self, settings: dict):
         current_phase = self.degree(acos(settings['Fp']))
-
         if settings['lagging'] and current_phase != 0.0:
             current_phase *= -1
+
         return (settings['Ia'], current_phase)
 
     def calculate_raia(self, settings: dict, polar_params: dict):
@@ -63,6 +63,10 @@ class BaseBusiness:
         settings['Ra'] = complex(settings['Ra'], 0)
         settings['Z'] = settings['Ra'] + settings['Xs']
         return settings
+
+    @staticmethod
+    def _update_ia(settings: dict, polar_params: dict):
+        return (settings['Il'], polar_params['Ia'][1])
 
     @staticmethod
     def calculate_ia_module(settings: dict):
