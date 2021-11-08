@@ -10,7 +10,9 @@ class GeneratorService(GeneratorBusiness):
         self.settings_coords = self.get_coords(self.settings)
 
     def update_load(self, load: float):
-        pass
+        self.load['settings']['Il'] = load
+        return self.load_update(params=self.load)
+
 
     def update_ea(self, voltage: float):
         pass

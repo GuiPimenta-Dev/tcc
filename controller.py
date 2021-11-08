@@ -16,4 +16,4 @@ api.add_namespace(generator.nms, path=GENERATOR_ROUTE_PREFIX)
 app.config['RESTX_ERROR_404_HELP'] = False
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)

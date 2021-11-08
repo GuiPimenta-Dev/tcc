@@ -8,6 +8,7 @@ class Settings(MotorBaseBusiness):
         settings['load'] = settings['load'] * 0.746 + settings['losses']
         settings = self.calculate_impedance(settings=settings)
         settings['Il'] = self.__calculate_il(settings=settings)
+        settings['Ia'] = self.calculate_ia_module(settings=settings)
         polar_params = self.__polar_params(settings)
         rect_params = self.rectangular_params(polar_params=polar_params)
         return {

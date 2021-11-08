@@ -1,0 +1,1 @@
+#TODO verificar se no livro esta errado para gerador isolado atrasado/adiantado

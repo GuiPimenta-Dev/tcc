@@ -40,14 +40,11 @@ class BaseBusiness:
         }
 
     def calculate_ia(self, settings: dict):
-        current_module = settings['Il']
-        if settings['delta']:
-            current_module = current_module / sqrt(3)
-
         current_phase = self.degree(acos(settings['Fp']))
+
         if settings['lagging'] and current_phase != 0.0:
             current_phase *= -1
-        return (current_module, current_phase)
+        return (settings['Ia'], current_phase)
 
     def calculate_raia(self, settings: dict, polar_params: dict):
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
@@ -66,6 +63,13 @@ class BaseBusiness:
         settings['Ra'] = complex(settings['Ra'], 0)
         settings['Z'] = settings['Ra'] + settings['Xs']
         return settings
+
+    @staticmethod
+    def calculate_ia_module(settings: dict):
+        Ia = settings['Il']
+        if settings['delta']:
+            Ia = Ia / sqrt(3)
+        return Ia
 
     @staticmethod
     def round(x: float):
