@@ -45,7 +45,7 @@ class BaseBusiness:
             current_module = current_module / sqrt(3)
 
         current_phase = self.degree(acos(settings['Fp']))
-        if settings['lagging']:
+        if settings['lagging'] and current_phase != 0.0:
             current_phase *= -1
         return (current_module, current_phase)
 
