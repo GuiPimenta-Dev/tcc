@@ -13,11 +13,8 @@ load_parser = motor_parser.copy()
 voltage_parser = motor_parser.copy()
 power_factor_parser = motor_parser.copy()
 
-motor_parser.add_argument('VtN', required=False, type=float, location='json')
-motor_parser.add_argument('SN', required=False, type=float, location='json')
-motor_parser.add_argument('FpN', required=False, type=float, location='json', default=0.8)
+
 motor_parser.add_argument('Vt', required=False, type=float, location='json', default=208)
-motor_parser.add_argument('Ia', required=False, type=float, location='json')
 motor_parser.add_argument('S', required=False, type=float, location='json', default=45)
 motor_parser.add_argument('Fp', required=False, type=float, location='json', default=0.85)
 motor_parser.add_argument('lagging', required=False, type=bool, location='json', default=True)

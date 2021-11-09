@@ -22,3 +22,5 @@ class Voltage(MotorBaseBusiness):
 
     def __calculate_ea_phase(self, settings_voltage: tuple, voltage: float):
         return self.degree(asin((settings_voltage[0] / voltage) * sin(self.rad(settings_voltage[1]))))
+
+

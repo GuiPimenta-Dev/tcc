@@ -6,7 +6,7 @@ from services.isolated_generator import IsolatedGeneratorService
 from utils.constants import ISOLATED_GENERATOR_ROUTE_PREFIX
 
 bp = Blueprint('isolated_generator', __name__, url_prefix=ISOLATED_GENERATOR_ROUTE_PREFIX)
-nms = Namespace('Generator')
+nms = Namespace('Isolated Generator')
 
 isolated_generator_parser = reqparse.RequestParser(bundle_errors=True)
 load_parser = isolated_generator_parser.copy()

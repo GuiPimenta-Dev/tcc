@@ -1,11 +1,9 @@
 from cmath import phase, rect, polar
-from math import sqrt, acos
 
 from business.base.base import BaseBusiness
 
 
 class MotorBaseBusiness(BaseBusiness):
-
     def update_ia(self, settings: dict, rect_params: dict):
         Ia = polar((rect_params['Vt'] - rect_params['Ea']) / settings['Z'])
 

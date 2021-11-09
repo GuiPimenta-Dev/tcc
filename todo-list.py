@@ -1,1 +1,1 @@
-#TODO verificar se no livro esta errado para gerador isolado atrasado/adiantado
+#TODO validate with flavio the generator load, power factor and voltage updates

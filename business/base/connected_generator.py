@@ -1,9 +1,15 @@
-from cmath import phase, rect
+from cmath import phase, rect, polar
 
 from business.base.base import BaseBusiness
 
 
 class ConnectedGeneratorBaseBusiness(BaseBusiness):
+
+    def update_ia(self, settings: dict, rect_params: dict):
+        Ia = polar((rect_params['Vt'] + rect_params['Ea']) / settings['Z'])
+
+        return (Ia[0], self.degree(Ia[1]))
+
     def calculate_connected_ea(self, settings: dict, polar_params: dict):
         Vt = rect(polar_params['Vt'][0], self.rad(polar_params['Vt'][1]))
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))

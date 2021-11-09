@@ -1,5 +1,5 @@
 from cmath import rect, phase
-from math import pi, sqrt, acos
+from math import pi, sqrt, acos, sin, asin
 
 
 class BaseBusiness:

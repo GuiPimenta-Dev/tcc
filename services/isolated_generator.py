@@ -1,6 +1,7 @@
 from copy import deepcopy
 from business.IsolatedGenerator import IsolatedGenerator
 
+
 class IsolatedGeneratorService(IsolatedGenerator):
     def __init__(self, params: dict):
         self.settings = self.create_generator(params)

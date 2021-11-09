@@ -11,7 +11,7 @@ class Load(IsolatedGeneratorBaseBusiness):
         polar_params['Ia'] = self._update_ia(settings=settings, polar_params=polar_params)
         polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
-        polar_params['Vt'] = self.__calculate_isolated_vt(settings=settings, polar_params=polar_params)
+        polar_params['Vt'] = self.__calculate_vt(settings=settings, polar_params=polar_params)
 
         params = {
             'polar': polar_params,
@@ -20,7 +20,7 @@ class Load(IsolatedGeneratorBaseBusiness):
         return self.get_coords(params=params)
 
 
-    def __calculate_isolated_vt(self, settings: dict, polar_params: dict):
+    def __calculate_vt(self, settings: dict, polar_params: dict):
         Ea = rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1]))
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
         Vt = Ea - settings['Ra'] * Ia - settings['Xs'] * Ia

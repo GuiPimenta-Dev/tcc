@@ -11,3 +11,4 @@ class IsolatedGeneratorBaseBusiness(BaseBusiness):
         if not settings['delta']:
             Vt = sqrt(3) * Vt
         return (Vt, 0)
+

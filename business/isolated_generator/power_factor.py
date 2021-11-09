@@ -21,3 +21,4 @@ class PowerFactor(IsolatedGeneratorBaseBusiness):
             'rect': self.rectangular_params(polar_params=polar_params)
         }
         return self.get_coords(params=params)
+0

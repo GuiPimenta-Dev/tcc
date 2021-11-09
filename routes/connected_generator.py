@@ -6,7 +6,7 @@ from services.connected_generator import ConnectedGeneratorService
 from utils.constants import CONNECTED_GENERATOR_ROUTE_PREFIX
 
 bp = Blueprint('connected_generator', __name__, url_prefix=CONNECTED_GENERATOR_ROUTE_PREFIX)
-nms = Namespace('Generator')
+nms = Namespace('Connected Generator')
 
 connected_generator_parser = reqparse.RequestParser(bundle_errors=True)
 load_parser = connected_generator_parser.copy()
