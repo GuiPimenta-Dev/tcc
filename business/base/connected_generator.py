@@ -10,7 +10,7 @@ class ConnectedGeneratorBaseBusiness(BaseBusiness):
 
         return (Ia[0], self.degree(Ia[1]))
 
-    def calculate_connected_ea(self, settings: dict, polar_params: dict):
+    def calculate_ea(self, settings: dict, polar_params: dict):
         Vt = rect(polar_params['Vt'][0], self.rad(polar_params['Vt'][1]))
         Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
         Ea = Vt + settings['Ra'] * Ia + settings['Xs'] * Ia

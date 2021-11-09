@@ -12,7 +12,7 @@ app.register_blueprint(motor.bp)
 app.register_blueprint(connected_generator.bp)
 app.register_blueprint(isolated_generator.bp)
 
-api = Api(app, doc=f'{API_ROUTE_PREFIX}/docs', title='Simulador Fasorial de Máquinas Síncronas')
+api = Api(app, doc=f'{API_ROUTE_PREFIX}/docs', title='Syncronous Machine Phasor Simulator')
 api.add_namespace(motor.nms, path=MOTOR_ROUTE_PREFIX)
 api.add_namespace(connected_generator.nms, path=CONNECTED_GENERATOR_ROUTE_PREFIX)
 api.add_namespace(isolated_generator.nms, path=ISOLATED_GENERATOR_ROUTE_PREFIX)

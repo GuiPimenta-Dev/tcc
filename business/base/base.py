@@ -64,6 +64,17 @@ class BaseBusiness:
         settings['Z'] = settings['Ra'] + settings['Xs']
         return settings
 
+    def calculate_ea_phase(self, settings_voltage: tuple, voltage: float):
+        return self.degree(asin((settings_voltage[0] / voltage) * sin(self.rad(settings_voltage[1]))))
+
+    def calculate_vt(self, settings: dict, polar_params: dict):
+        Ea = rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1]))
+        Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
+        Vt = Ea - settings['Ra'] * Ia - settings['Xs'] * Ia
+
+        voltage_module = abs(Vt)
+        return (voltage_module, 0)
+
     @staticmethod
     def _update_ia(settings: dict, polar_params: dict):
         return (settings['Il'], polar_params['Ia'][1])

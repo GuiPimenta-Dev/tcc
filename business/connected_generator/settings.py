@@ -17,7 +17,7 @@ class Settings(ConnectedGeneratorBaseBusiness):
         polar_params = {'Vt': (settings['Vt'], 0), 'Ia': self.calculate_ia(settings=settings)}
         polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
-        polar_params['Ea'] = self.calculate_connected_ea(settings=settings, polar_params=polar_params)
+        polar_params['Ea'] = self.calculate_ea(settings=settings, polar_params=polar_params)
 
         return polar_params
 

@@ -6,7 +6,7 @@ from business.base.motor import MotorBaseBusiness
 class Voltage(MotorBaseBusiness):
     def voltage_update(self, params: dict, settings_voltage: tuple, voltage: float):
         settings, polar_params, _ = params.values()
-        phase = self.__calculate_ea_phase(settings_voltage=settings_voltage, voltage=voltage)
+        phase = self.calculate_ea_phase(settings_voltage=settings_voltage, voltage=voltage)
 
         polar_params['Ea'] = (voltage, phase)
         rect_params = self.rectangular_params(polar_params=polar_params)
@@ -20,7 +20,6 @@ class Voltage(MotorBaseBusiness):
         }
         return self.get_coords(params=params)
 
-    def __calculate_ea_phase(self, settings_voltage: tuple, voltage: float):
-        return self.degree(asin((settings_voltage[0] / voltage) * sin(self.rad(settings_voltage[1]))))
+
 
 
