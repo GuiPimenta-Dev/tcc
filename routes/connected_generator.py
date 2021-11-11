@@ -21,7 +21,7 @@ connected_generator_parser.add_argument('Xs', required=False, type=float, locati
 connected_generator_parser.add_argument('Ra', required=False, type=float, location='json', default=0.015)
 connected_generator_parser.add_argument('losses', required=False, type=float, location='json', default=70)
 connected_generator_parser.add_argument('lagging', required=False, type=bool, location='json', default=True)
-connected_generator_parser.add_argument('delta', required=False, type=bool, location='json', default=True)
+connected_generator_parser.add_argument('delta', required=False, type=bool, location='json', default=False)
 
 load_parser.add_argument('load', required=False, type=float, location='json', default=30)
 

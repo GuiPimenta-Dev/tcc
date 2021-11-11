@@ -1,13 +1,11 @@
-from math import asin
-
-from business.base.isolated_generator import IsolatedGeneratorBaseBusiness
+from business.base.generator.isolated_generator import IsolatedGeneratorBaseBusiness
 
 
 class Settings(IsolatedGeneratorBaseBusiness):
     def create_generator(self, settings: dict):
-        settings['Ia'] = self.calculate_ia_module(settings=settings)
-        settings = self.calculate_impedance(settings=settings)
+        settings = self.calculate_settings(settings=settings)
         polar_params = self.__polar_params(settings)
+        settings['Ea'] = polar_params['Ea'][0]
         rect_params = self.rectangular_params(polar_params=polar_params)
         return {
             'settings': settings,
@@ -16,14 +14,10 @@ class Settings(IsolatedGeneratorBaseBusiness):
         }
 
     def __polar_params(self, settings: dict):
-        polar_params = {'Ia': self.calculate_ia(settings=settings)}
-        polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
-        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
-        polar_params['Ea'] = self.__calculate_ea_phase(settings=settings)
-        polar_params['Vt'] = self.calculate_vt_module(settings=settings, polar_params=polar_params)
-
-        return polar_params
-
-    def __calculate_ea_phase(self, settings: dict):
-        phase = self.degree(asin((abs(settings['Z']) / settings['Ea']) * settings['Fp']))
-        return (settings['Ea'], phase)
+        return {
+            'Ia': (settings['Ia'], settings['theta']),
+            'Vt': (settings['Vt'], 0),
+            'RaIa': self.calculate_raia(settings=settings),
+            'jXsIa': self.calculate_jxsia(settings=settings),
+            'Ea': self.calculate_ea(settings=settings),
+        }

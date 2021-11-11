@@ -1,6 +1,6 @@
 from math import sqrt
 
-from business.base.motor import MotorBaseBusiness
+from business.base.motor.motor import MotorBaseBusiness
 
 
 class Settings(MotorBaseBusiness):

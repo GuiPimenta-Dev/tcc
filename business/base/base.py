@@ -1,5 +1,5 @@
 from cmath import rect, phase
-from math import pi, sqrt, acos, sin, asin
+from math import pi, sqrt, acos
 
 
 class BaseBusiness:
@@ -40,51 +40,34 @@ class BaseBusiness:
         }
 
     def calculate_ia(self, settings: dict):
-        current_phase = self.degree(acos(settings['Fp']))
-        if settings['lagging'] and current_phase != 0.0:
-            current_phase *= -1
+        module = settings['Il']
+        if settings['delta']:
+            module = module / sqrt(3)
 
-        return (settings['Ia'], current_phase)
+        phase = self.degree(acos(settings['Fp']))
+        if settings['lagging'] and phase != 0.0:
+            phase *= -1
 
-    def calculate_raia(self, settings: dict, polar_params: dict):
-        Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
+        return (module, phase)
+
+    def calculate_raia(self, settings: dict):
+        Ia = rect(settings['Ia'], self.rad(settings['theta']))
         Ra = settings['Ra'] * Ia
 
         return (abs(Ra), self.degree(phase(Ra)))
 
-    def calculate_jxsia(self, settings: dict, polar_params: dict):
-        Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
+    def calculate_jxsia(self, settings: dict):
+        Ia = rect(settings['Ia'], self.rad(settings['theta']))
         jXsIa = settings['Xs'] * Ia
 
         return (abs(jXsIa), self.degree(phase(jXsIa)))
 
-    def calculate_impedance(self, settings: dict):
+    @staticmethod
+    def calculate_impedance(settings: dict):
         settings['Xs'] = complex(0, settings['Xs'])
         settings['Ra'] = complex(settings['Ra'], 0)
         settings['Z'] = settings['Ra'] + settings['Xs']
         return settings
-
-    def calculate_ea_phase(self, settings_voltage: tuple, voltage: float):
-        return self.degree(asin((settings_voltage[0] / voltage) * sin(self.rad(settings_voltage[1]))))
-
-    def calculate_vt(self, settings: dict, polar_params: dict):
-        Ea = rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1]))
-        Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
-        Vt = Ea - settings['Ra'] * Ia - settings['Xs'] * Ia
-
-        voltage_module = abs(Vt)
-        return (voltage_module, 0)
-
-    @staticmethod
-    def _update_ia(settings: dict, polar_params: dict):
-        return (settings['Il'], polar_params['Ia'][1])
-
-    @staticmethod
-    def calculate_ia_module(settings: dict):
-        Ia = settings['Il']
-        if settings['delta']:
-            Ia = Ia / sqrt(3)
-        return Ia
 
     @staticmethod
     def round(x: float):
