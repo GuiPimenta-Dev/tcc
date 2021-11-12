@@ -10,8 +10,8 @@ class Load(IsolatedGeneratorBaseBusiness):
         settings, polar_params, _ = params.values()
 
         polar_params['Ia'] = (settings['Ia'], settings['theta'])
-        polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
-        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
+        polar_params['RaIa'] = self.calculate_raia(settings=settings)
+        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
         polar_params['Ea'] = (settings['Ea'], self.__calculate_ea_phase(settings=settings))
         polar_params['Vt'] = self.__calculate_vt(settings=settings, polar_params=polar_params)
 

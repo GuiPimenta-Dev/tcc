@@ -76,7 +76,7 @@ class Voltage(BaseIsolatedGenerator):
     def put(self):
         vt = voltage_parser.parse_args()['Vt']
         try:
-            return self.isolated_generator.update_ea(voltage=vt)
+            return self.isolated_generator.update_vt(voltage=vt)
 
         except Exception as e:
             logger.info(str(e))

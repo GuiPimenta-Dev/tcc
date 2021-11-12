@@ -1,6 +1,7 @@
 from copy import deepcopy
 from business.ConnectedGenerator import ConnectedGenerator
 
+
 class ConnectedGeneratorService(ConnectedGenerator):
     def __init__(self, params: dict):
         self.settings = self.create_generator(params)
@@ -10,13 +11,10 @@ class ConnectedGeneratorService(ConnectedGenerator):
         self.settings_coords = self.get_coords(self.settings)
 
     def update_load(self, load: float):
-        self.load['settings']['Il'] = load
-        return self.load_update(params=self.load)
+        return self.load_update(settings=self.load['settings'], load=load)
 
-    def update_ea(self, voltage: float):
-        self.voltage['settings']['Vt'] = voltage
-        self.voltage['polar']['Vt'] = (voltage, self.voltage['polar']['Vt'][1])
-        return self.voltage_update(params=self.voltage)
+    def update_vt(self, voltage: float):
+        return self.voltage_update(settings=self.voltage['settings'], voltage=voltage)
 
     def update_fp(self, power_factor: float):
         self.power_factor['settings']['Fp'] = power_factor
