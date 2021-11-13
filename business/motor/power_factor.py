@@ -13,8 +13,8 @@ class PowerFactor(MotorBaseBusiness):
 
         polar_params['Ia'] = (polar_params['Ia'][0], phase)
         polar_params['Ea'] = self.calculate_ea(settings=settings, polar_params=polar_params)
-        polar_params['RaIa'] = self.calculate_raia(settings=settings, polar_params=polar_params)
-        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings, polar_params=polar_params)
+        polar_params['RaIa'] = self.calculate_raia(settings=settings)
+        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
 
         params = {
             'polar': polar_params,

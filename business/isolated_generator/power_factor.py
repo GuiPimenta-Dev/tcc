@@ -1,5 +1,3 @@
-from cmath import acos
-
 from business.base.generator.isolated_generator import IsolatedGeneratorBaseBusiness
 
 
@@ -9,4 +7,3 @@ class PowerFactor(IsolatedGeneratorBaseBusiness):
         return super(PowerFactor, self).power_factor_update(params=params)
 
 
-0

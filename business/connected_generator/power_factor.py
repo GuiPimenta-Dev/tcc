@@ -1,5 +1,3 @@
-from cmath import acos
-
 from business.base.generator.connected_generator import ConnectedGeneratorBaseBusiness
 
 

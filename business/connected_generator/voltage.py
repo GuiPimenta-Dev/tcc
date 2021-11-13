@@ -1,5 +1,3 @@
-from math import sin, asin
-
 from business.base.generator.connected_generator import ConnectedGeneratorBaseBusiness
 
 

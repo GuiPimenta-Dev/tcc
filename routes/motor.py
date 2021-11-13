@@ -15,7 +15,6 @@ power_factor_parser = motor_parser.copy()
 
 
 motor_parser.add_argument('Vt', required=False, type=float, location='json', default=208)
-motor_parser.add_argument('S', required=False, type=float, location='json', default=45)
 motor_parser.add_argument('Fp', required=False, type=float, location='json', default=0.85)
 motor_parser.add_argument('lagging', required=False, type=bool, location='json', default=True)
 motor_parser.add_argument('delta', required=False, type=bool, location='json', default=True)
