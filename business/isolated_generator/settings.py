@@ -1,7 +1,7 @@
-from business.base.generator.isolated_generator import IsolatedGeneratorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class Settings(IsolatedGeneratorBaseBusiness):
+class Settings(GeneratorBaseBusiness):
     def create_generator(self, settings: dict):
         settings = self.calculate_settings(settings=settings)
         polar_params = self.__polar_params(settings)

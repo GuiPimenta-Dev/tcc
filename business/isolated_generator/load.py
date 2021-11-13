@@ -1,25 +1,27 @@
 from cmath import rect, phase
 from math import asin
 
-from business.base.generator.isolated_generator import IsolatedGeneratorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class Load(IsolatedGeneratorBaseBusiness):
+class Load(GeneratorBaseBusiness):
 
     def load_update(self, params: dict):
-        settings, polar_params, _ = params.values()
+        settings, _, _ = params.values()
 
-        polar_params['Ia'] = (settings['Ia'], settings['theta'])
-        polar_params['RaIa'] = self.calculate_raia(settings=settings)
-        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
-        polar_params['Ea'] = (settings['Ea'], self.__calculate_ea_phase(settings=settings))
-        polar_params['Vt'] = self.__calculate_vt(settings=settings, polar_params=polar_params)
-
+        polar_params = self.__polar_params(settings=settings)
         params = {
             'polar': polar_params,
             'rect': self.rectangular_params(polar_params=polar_params)
         }
         return self.get_coords(params=params)
+
+    def __polar_params(self, settings: dict):
+        polar_params = {'Ia': (settings['Ia'], settings['Ia_angle']), 'RaIa': self.calculate_raia(settings=settings),
+                        'jXsIa': self.calculate_jxsia(settings=settings),
+                        'Ea': (settings['Ea'], self.__calculate_ea_phase(settings=settings))}
+        polar_params['Vt'] = self.__calculate_vt(settings=settings, polar_params=polar_params)
+        return polar_params
 
     def __calculate_ea_phase(self, settings: dict):
         return self.degree(asin((abs(settings['Xs']) * settings['Ia'] * settings['Fp']) / settings['Ea']))

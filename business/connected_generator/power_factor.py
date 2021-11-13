@@ -1,7 +1,7 @@
-from business.base.generator.connected_generator import ConnectedGeneratorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class PowerFactor(ConnectedGeneratorBaseBusiness):
+class PowerFactor(GeneratorBaseBusiness):
 
     def power_factor_update(self, params: dict):
         return super(PowerFactor, self).power_factor_update(params=params)

@@ -1,7 +1,7 @@
-from business.base.generator.connected_generator import ConnectedGeneratorBaseBusiness
+from business.base.generator import GeneratorBaseBusiness
 
 
-class Voltage(ConnectedGeneratorBaseBusiness):
+class Voltage(GeneratorBaseBusiness):
     def voltage_update(self, settings: dict, voltage: float):
         settings['Ia'] = self.__calculate_ia(settings=settings, voltage=voltage)
         settings['Vt'] = voltage
@@ -19,7 +19,7 @@ class Voltage(ConnectedGeneratorBaseBusiness):
     def __polar_params(self, settings: dict):
         return {
             'Vt': (settings['Vt'], 0),
-            'Ia': (settings['Ia'], settings['theta']),
+            'Ia': (settings['Ia'], settings['Ia_angle']),
             'RaIa': self.calculate_raia(settings=settings),
             'jXsIa': self.calculate_jxsia(settings=settings),
             'Ea': self.calculate_ea(settings=settings),

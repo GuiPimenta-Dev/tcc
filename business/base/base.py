@@ -51,13 +51,13 @@ class BaseBusiness:
         return (module, phase)
 
     def calculate_raia(self, settings: dict):
-        Ia = rect(settings['Ia'], self.rad(settings['theta']))
+        Ia = rect(settings['Ia'], self.rad(settings['Ia_angle']))
         Ra = settings['Ra'] * Ia
 
         return (abs(Ra), self.degree(phase(Ra)))
 
     def calculate_jxsia(self, settings: dict):
-        Ia = rect(settings['Ia'], self.rad(settings['theta']))
+        Ia = rect(settings['Ia'], self.rad(settings['Ia_angle']))
         jXsIa = settings['Xs'] * Ia
 
         return (abs(jXsIa), self.degree(phase(jXsIa)))

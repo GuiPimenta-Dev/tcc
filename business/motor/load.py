@@ -1,6 +1,6 @@
 from math import asin
 
-from business.base.motor.motor import MotorBaseBusiness
+from business.base.motor import MotorBaseBusiness
 
 
 class Load(MotorBaseBusiness):
@@ -8,21 +8,18 @@ class Load(MotorBaseBusiness):
     def load_update(self, params: dict):
         settings, polar_params, _ = params.values()
         phase = (settings['load'] * abs(settings['Z']) * 1000) / (3 * settings['Vt'] * polar_params['Ea'][0])
+        settings['Ea_angle'] = self.degree(self.rad(-1 * self.degree(asin(phase))))
 
-        if phase > 1:
-            y = int(phase)
-            phase = phase - y
-
-        phase = self.degree(self.rad(-1 * self.degree(asin(phase))))
-
-        polar_params['Ea'] = (params['polar']['Ea'][0], phase)
-        rect_params = self.rectangular_params(polar_params=polar_params)
-        polar_params['Ia'] = self.update_ia(settings=settings, rect_params=rect_params)
-        polar_params['RaIa'] = self.calculate_raia(settings=settings)
-        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
-
+        polar_params = self.__polar_params(settings=settings, polar_params=polar_params)
         params = {
             'polar': polar_params,
             'rect': self.rectangular_params(polar_params=polar_params)
         }
         return self.get_coords(params=params)
+
+    def __polar_params(self, settings: dict, polar_params: dict):
+        polar_params['Ea'] = (settings['Ea'], settings['Ea_angle'])
+        polar_params['Ia'] = self.update_ia(settings=settings)
+        polar_params['RaIa'] = self.calculate_raia(settings=settings)
+        polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
+        return polar_params
