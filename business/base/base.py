@@ -22,12 +22,22 @@ class BaseBusiness:
         }
 
     def __get_coords(self, params: dict):
+        max_coord = 0
+        for value in params.values():
+            if abs(value.real) > max_coord:
+                max_coord = abs(value.real)
+
+            if abs(value.imag) > max_coord:
+                max_coord = abs(value.imag)
+
+        coef = 45 / max_coord
+
         return {
-            'Vt': (self.round(params['Vt'].real), self.round(params['Vt'].imag)),
-            'Ia': (self.round(params['Ia'].real), self.round(params['Ia'].imag)),
-            'Ea': (self.round(params['Ea'].real), self.round(params['Ea'].imag)),
-            'RaIa': (self.round(params['RaIa'].real), self.round(params['RaIa'].imag)),
-            'jXsIa': (self.round(params['jXsIa'].real), self.round(params['jXsIa'].imag)),
+            'Vt': (self.round(params['Vt'].real * coef), self.round(params['Vt'].imag) * coef),
+            'Ia': (self.round(params['Ia'].real * coef), self.round(params['Ia'].imag) * coef),
+            'Ea': (self.round(params['Ea'].real * coef), self.round(params['Ea'].imag) * coef),
+            'RaIa': (self.round(params['RaIa'].real * coef), self.round(params['RaIa'].imag) * coef),
+            'jXsIa': (self.round(params['jXsIa'].real * coef), self.round(params['jXsIa'].imag) * coef),
         }
 
     def __get_labels(self, params: dict):
