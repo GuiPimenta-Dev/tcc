@@ -8,8 +8,8 @@ class Load(MotorBaseBusiness):
     def load_update(self, params: dict):
         settings, polar_params, _ = params.values()
         phase = (settings['load'] * abs(settings['Z']) * 1000) / (3 * settings['Vt'] * polar_params['Ea'][0])
-        if phase > 1:
-            phase -= 1
+        # phase = self.parse_revolutions(phase)
+
         settings['Ea_angle'] = self.degree(self.rad(-1 * self.degree(asin(phase))))
 
         polar_params = self.__polar_params(settings=settings, polar_params=polar_params)
