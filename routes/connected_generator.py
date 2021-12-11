@@ -20,8 +20,8 @@ connected_generator_parser.add_argument('Fp', required=False, type=float, locati
 connected_generator_parser.add_argument('Xs', required=False, type=float, location='json', default=0.1)
 connected_generator_parser.add_argument('Ra', required=False, type=float, location='json', default=0.015)
 connected_generator_parser.add_argument('losses', required=False, type=float, location='json', default=70)
-connected_generator_parser.add_argument('lagging', required=False, type=bool, location='json', default=True)
-connected_generator_parser.add_argument('delta', required=False, type=bool, location='json', default=False)
+connected_generator_parser.add_argument('lagging', required=False, type=bool, location='json', default='lagging')
+connected_generator_parser.add_argument('delta', required=False, type=bool, location='json', default='star')
 
 load_parser.add_argument('load', required=False, type=float, location='json', default=30)
 
@@ -35,6 +35,15 @@ class BaseConnectedGenerator(Resource):
         super().__init__(*args, **kwargs)
 
     def create_connected_generator(self, args: dict):
+        if args['lagging'] == 'lagging':
+            args['lagging'] = True
+        else:
+            args['lagging'] = False
+
+        if args['delta'] == 'delta':
+            args['delta'] = True
+        else:
+            args['delta'] = False
         BaseConnectedGenerator.connected_generator = ConnectedGeneratorService(params=args)
 
 
