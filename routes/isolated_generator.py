@@ -19,12 +19,12 @@ isolated_generator_parser.add_argument('Fp', required=False, type=float, locatio
 isolated_generator_parser.add_argument('Xs', required=False, type=float, location='json', default=0.1)
 isolated_generator_parser.add_argument('Ra', required=False, type=float, location='json', default=0.015)
 isolated_generator_parser.add_argument('losses', required=False, type=float, location='json', default=70)
-isolated_generator_parser.add_argument('lagging', required=False, type=bool, location='json', default=True)
-isolated_generator_parser.add_argument('delta', required=False, type=bool, location='json', default=False)
+isolated_generator_parser.add_argument('lagging', required=False, type=str, location='json', default='lagging')
+isolated_generator_parser.add_argument('delta', required=False, type=str, location='json', default='star')
 
 load_parser.add_argument('load', required=False, type=float, location='json', default=30)
 
-voltage_parser.add_argument('Vt', required=False, type=float, location='json', default=227.5)
+voltage_parser.add_argument('Ea', required=False, type=float, location='json', default=227.5)
 
 power_factor_parser.add_argument('Fp', required=False, type=float, location='json', default=1)
 
@@ -34,6 +34,16 @@ class BaseIsolatedGenerator(Resource):
         super().__init__(*args, **kwargs)
 
     def create_isolated_generator(self, args: dict):
+        if args['lagging'] == 'lagging':
+            args['lagging'] = True
+        else:
+            args['lagging'] = False
+
+        if args['delta'] == 'delta':
+            args['delta'] = True
+        else:
+            args['delta'] = False
+
         BaseIsolatedGenerator.isolated_generator = IsolatedGeneratorService(params=args)
 
 
@@ -74,7 +84,7 @@ class Voltage(BaseIsolatedGenerator):
     @nms.response(200, 'Success')
     @nms.response(400, 'Bad Request')
     def put(self):
-        vt = voltage_parser.parse_args()['Vt']
+        vt = voltage_parser.parse_args()['Ea']
         try:
             return self.isolated_generator.update_vt(voltage=vt)
 

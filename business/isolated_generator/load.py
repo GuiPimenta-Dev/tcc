@@ -24,7 +24,10 @@ class Load(GeneratorBaseBusiness):
         return polar_params
 
     def __calculate_ea_phase(self, settings: dict):
-        return self.degree(asin((abs(settings['Xs']) * settings['Ia'] * settings['Fp']) / settings['Ea']))
+        phase = (abs(settings['Xs']) * settings['Ia'] * settings['Fp']) / settings['Ea']
+        phase = self.parse_revolutions(phase)
+
+        return self.degree(asin(phase))
 
     def __calculate_vt(self, settings: dict, polar_params: dict):
         Ea = rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1]))
