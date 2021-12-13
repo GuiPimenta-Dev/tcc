@@ -25,7 +25,7 @@ connected_generator_parser.add_argument('delta', required=False, type=bool, loca
 
 load_parser.add_argument('load', required=False, type=float, location='json', default=30)
 
-voltage_parser.add_argument('Vt', required=False, type=float, location='json', default=227.5)
+voltage_parser.add_argument('Ea', required=False, type=float, location='json', default=227.5)
 
 power_factor_parser.add_argument('Fp', required=False, type=float, location='json', default=1)
 
@@ -84,7 +84,7 @@ class Voltage(BaseConnectedGenerator):
     @nms.response(200, 'Success')
     @nms.response(400, 'Bad Request')
     def put(self):
-        vt = voltage_parser.parse_args()['Vt']
+        vt = voltage_parser.parse_args()['Ea']
         try:
             return self.connected_generator.update_vt(voltage=vt)
 
