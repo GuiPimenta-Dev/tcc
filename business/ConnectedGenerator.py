@@ -18,7 +18,7 @@ class ConnectedGenerator(Settings, Load, Voltage, PowerFactor):
         min_ea = self.__calculate_slider_min_ea(params=params)
         return {
             'load': {'min': 0, 'max': 2000, 'value': params['settings']['Ia']},
-            'voltage': {'min': min_ea, 'max': params['settings']['VtN'], 'value': initial_voltage},
+            'voltage': {'min': min_ea, 'max': params['settings']['VtN'] * 1.2, 'value': initial_voltage},
             'power_factor': {'min': 0, 'max': 1, 'value': params['settings']['Fp']}
         }
 
@@ -28,7 +28,7 @@ class ConnectedGenerator(Settings, Load, Voltage, PowerFactor):
     #         try:
     #             self.load_update(params=params)
     #             params['settings']['load'] += 1
-    #         except:
+    #         except ValueError:
     #             break
     #
     #     return int((params['settings']['load'] / 0.746) - params['settings']['losses']) - 1
