@@ -1,11 +1,14 @@
 from business.base.generator import GeneratorBaseBusiness
+from math import asin
+from cmath import rect, phase
+from copy import deepcopy
 
 
 class Voltage(GeneratorBaseBusiness):
-    def voltage_update(self, settings: dict, voltage: float):
-        settings['Ia'] = self.__calculate_ia(settings=settings, voltage=voltage)
-        settings['Vt'] = voltage
-        polar_params = self.__polar_params(settings)
+    def voltage_update(self, settings: dict):
+        delta = self.__calculate_new_delta(settings=settings)
+        Ia = self.__calculate_new_ia(settings=settings, delta=delta)
+        polar_params = self.__polar_params(settings=settings, Ia=Ia)
 
         params = {
             'polar': polar_params,
@@ -13,14 +16,25 @@ class Voltage(GeneratorBaseBusiness):
         }
         return self.get_coords(params=params)
 
-    def __calculate_ia(self, settings: dict, voltage: float):
-        return (settings['Vt'] * settings['Ia']) / voltage
+    def __calculate_new_delta(self, settings: dict):
+        return self.degree(asin((settings['Ia'] * settings['Fp'] * abs(settings['Xs'])) / settings['Ea']))
 
-    def __polar_params(self, settings: dict):
+    def __calculate_new_ia(self, settings: dict, delta: float):
+        Vt = rect(settings['Vt'], 0)
+        Ea = rect(settings['Ea'], self.rad(delta))
+        Ia = (Ea - Vt) / settings['Z']
+
+        current_module = abs(Ia)
+        current_phase = self.degree(phase(Ia))
+        return (current_module, current_phase)
+
+    def __polar_params(self, settings: dict, Ia: tuple):
+        new_settings = deepcopy(settings)
+        new_settings['Ia'], new_settings['Ia_angle'] = Ia[0], Ia[1]
         return {
             'Vt': (settings['Vt'], 0),
-            'Ia': (settings['Ia'], settings['Ia_angle']),
-            'RaIa': self.calculate_raia(settings=settings),
-            'jXsIa': self.calculate_jxsia(settings=settings),
-            'Ea': self.calculate_ea(settings=settings),
+            'Ia': Ia,
+            'RaIa': self.calculate_raia(settings=new_settings),
+            'jXsIa': self.calculate_jxsia(settings=new_settings),
+            'Ea': self.calculate_ea(settings=new_settings),
         }

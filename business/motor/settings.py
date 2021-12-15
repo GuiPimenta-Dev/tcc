@@ -16,6 +16,7 @@ class Settings(MotorBaseBusiness):
         }
 
     def __calculate_setings(self, settings: dict):
+        settings['kw_load'] = settings['load']
         settings['load'] = settings['load'] * 0.746 + settings['losses']
         settings = self.calculate_impedance(settings=settings)
         settings['Il'] = self.__calculate_il(settings=settings)

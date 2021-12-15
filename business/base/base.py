@@ -80,10 +80,6 @@ class BaseBusiness:
         return settings
 
     @staticmethod
-    def parse_revolutions(phase: float):
-        return phase - int(phase)
-
-    @staticmethod
     def round(x: float):
         return round(x, 2)
 

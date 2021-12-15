@@ -8,13 +8,15 @@ class ConnectedGeneratorService(ConnectedGenerator):
         self.load = deepcopy(self.settings)
         self.voltage = deepcopy(self.settings)
         self.power_factor = deepcopy(self.settings)
-        self.settings_coords = self.get_coords(self.settings)
+        self.settings_coords = self.get_settings_coords(self.settings)
 
     def update_load(self, load: float):
-        return self.load_update(settings=self.load['settings'], load=load)
+        self.load['settings']['Ia'] = load
+        return self.load_update(settings=self.load['settings'])
 
     def update_vt(self, voltage: float):
-        return self.voltage_update(settings=self.voltage['settings'], voltage=voltage)
+        self.voltage['settings']['Ea'] = voltage
+        return self.voltage_update(settings=self.voltage['settings'])
 
     def update_fp(self, power_factor: float):
         self.power_factor['settings']['Fp'] = power_factor

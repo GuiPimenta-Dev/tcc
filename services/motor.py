@@ -8,7 +8,8 @@ class MotorService(Motor):
         self.load = deepcopy(self.settings)
         self.voltage = deepcopy(self.settings)
         self.power_factor = deepcopy(self.settings)
-        self.settings_coords = self.get_coords(self.settings)
+        self.settings_coords = self.get_settings_coords(params=self.settings,
+                                                        settings_voltage=self.settings['polar']['Ea'])
 
     def update_load(self, load: float):
         self.load['settings']['load'] = load * 0.746 + self.load['settings']['losses']

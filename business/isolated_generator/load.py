@@ -25,7 +25,6 @@ class Load(GeneratorBaseBusiness):
 
     def __calculate_ea_phase(self, settings: dict):
         phase = (abs(settings['Xs']) * settings['Ia'] * settings['Fp']) / settings['Ea']
-        phase = self.parse_revolutions(phase)
 
         return self.degree(asin(phase))
 

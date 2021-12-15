@@ -2,9 +2,8 @@ from business.base.generator import GeneratorBaseBusiness
 
 class Load(GeneratorBaseBusiness):
 
-    def load_update(self, settings: dict, load: float):
-        settings['Vt'] = self.__calculate_vt(settings=settings, load=load)
-        settings['Ia'] = load
+    def load_update(self, settings: dict):
+        theta, delta = self.__calculate_new_theta_and_delta(settings=settings)
         polar_params = self.__polar_params(settings)
 
         params = {
@@ -14,9 +13,9 @@ class Load(GeneratorBaseBusiness):
         return self.get_coords(params=params)
 
 
-    def __calculate_vt(self, settings: dict, load: float):
-        return (settings['Vt'] * settings['Ia']) / load
-
+    def __calculate_new_theta_and_delta(self, settings: dict):
+        # TODO resolve equations system
+        pass
 
     def __polar_params(self, settings: dict):
         return {
