@@ -12,9 +12,10 @@ class TestMotor:
             'coords': {'Vt': (37.57, 0.0), 'Ia': (3.96, 2.9712708834866675), 'Ea': (45.0, -9.907246684452506),
                        'RaIa': (0.0, 0.0), 'jXsIa': (-7.43, 9.907246684452506)},
             'labels': {'Vt': '208 ∠ 0°', 'Ia': '27.42 ∠ 36.87°', 'Ea': '255.1 ∠ -12.42°', 'RaIa': '0.0 ∠ 0.0°',
-                       'jXsIa': '68.56 ∠ 126.87°'},
-            'sliders': {'load': {'min': 0, 'max': 82, 'value': 15}, 'voltage': {'min': 55, 'max': 308, 'value': 255.1},
-                        'power_factor': {'min': 0, 'max': 1, 'value': 0.8}}}
+                       'jXsIa': '68.56 ∠ 126.87°'}, 'sliders': {'load': {'min': 0, 'max': 82, 'value': 15},
+                                                                'voltage': {'min': 55, 'max': 369.59999999999997,
+                                                                            'value': 255.1},
+                                                                'power_factor': {'min': 0, 'max': 1, 'value': 0.8}}}
 
         results = service.settings_coords
         assert results == expected_result
