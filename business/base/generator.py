@@ -1,4 +1,5 @@
 from cmath import rect, phase
+from math import asin
 
 from business.base.base import BaseBusiness
 
@@ -33,6 +34,11 @@ class GeneratorBaseBusiness(BaseBusiness):
             'rect': self.rectangular_params(polar_params=polar_params)
         }
         return self.get_coords(params=params)
+
+    def calculate_new_delta(self, settings: dict):
+        return self.degree(asin((settings['Ia'] * settings['Fp'] * abs(settings['Xs'])) / settings['Ea']))
+
+
 
 
 

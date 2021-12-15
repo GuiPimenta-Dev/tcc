@@ -15,8 +15,7 @@ class IsolatedGeneratorService(IsolatedGenerator):
         return self.load_update(params=self.load)
 
     def update_vt(self, voltage: float):
-        self.voltage['settings']['Vt'] = voltage
-        self.voltage['polar']['Vt'] = (voltage, self.voltage['polar']['Vt'][1])
+        self.voltage['settings']['Ea'] = voltage
         return self.voltage_update(params=self.voltage)
 
     def update_fp(self, power_factor: float):

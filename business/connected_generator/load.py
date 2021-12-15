@@ -3,7 +3,7 @@ from business.base.generator import GeneratorBaseBusiness
 class Load(GeneratorBaseBusiness):
 
     def load_update(self, settings: dict):
-        theta, delta = self.__calculate_new_theta_and_delta(settings=settings)
+        # theta, delta = self.__calculate_new_theta_and_delta(settings=settings)
         polar_params = self.__polar_params(settings)
 
         params = {

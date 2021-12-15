@@ -8,7 +8,7 @@ class Voltage(GeneratorBaseBusiness):
     def voltage_update(self, settings: dict):
         delta = self.__calculate_new_delta(settings=settings)
         Ia = self.__calculate_new_ia(settings=settings, delta=delta)
-        polar_params = self.__polar_params(settings=settings, Ia=Ia)
+        polar_params = self.__polar_params(settings=settings, Ia=Ia, delta=delta)
 
         params = {
             'polar': polar_params,
@@ -28,7 +28,7 @@ class Voltage(GeneratorBaseBusiness):
         current_phase = self.degree(phase(Ia))
         return (current_module, current_phase)
 
-    def __polar_params(self, settings: dict, Ia: tuple):
+    def __polar_params(self, settings: dict, Ia: tuple, delta: float):
         new_settings = deepcopy(settings)
         new_settings['Ia'], new_settings['Ia_angle'] = Ia[0], Ia[1]
         return {
@@ -36,5 +36,5 @@ class Voltage(GeneratorBaseBusiness):
             'Ia': Ia,
             'RaIa': self.calculate_raia(settings=new_settings),
             'jXsIa': self.calculate_jxsia(settings=new_settings),
-            'Ea': self.calculate_ea(settings=new_settings),
+            'Ea': (settings['Ea'], delta),
         }

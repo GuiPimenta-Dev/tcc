@@ -14,6 +14,7 @@ class ConnectedGenerator(Settings, Load, Voltage, PowerFactor):
 
     def __get_sliders(self, params: dict, initial_voltage: float):
         # max_load = self.__calculate_slider_max_load(params=params)
+        #TODO change max load
         min_ea = self.__calculate_slider_min_ea(params=params)
         return {
             'load': {'min': 0, 'max': 2000, 'value': params['settings']['Ia']},
