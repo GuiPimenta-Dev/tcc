@@ -17,7 +17,7 @@ class Motor(Settings, Load, Voltage, PowerFactor):
         min_ea = self.__calculate_slider_min_ea(params=params, settings_voltage=settings_voltage)
         return {
             'load': {'min': 0, 'max': max_load, 'value': params['settings']['kw_load']},
-            'voltage': {'min': min_ea, 'max': params['settings']['VtN'] * 1.2, 'value': initial_voltage},
+            'voltage': {'min': min_ea, 'max': self.round(params['settings']['VtN'] * 1.2), 'value': initial_voltage},
             'power_factor': {'min': 0, 'max': 1, 'value': params['settings']['Fp']}
         }
 

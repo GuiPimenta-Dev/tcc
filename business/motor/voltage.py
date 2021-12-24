@@ -19,6 +19,7 @@ class Voltage(MotorBaseBusiness):
     def __polar_params(self, settings: dict, polar_params: dict):
         polar_params['Ea'] = (settings['Ea'], settings['Ea_angle'])
         polar_params['Ia'] = self.update_ia(settings=settings)
+        settings['Ia'], settings['Ia_angle'] = polar_params['Ia'][0], polar_params['Ia'][1]
         polar_params['RaIa'] = self.calculate_raia(settings=settings)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
 
