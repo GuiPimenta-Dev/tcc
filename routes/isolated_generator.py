@@ -14,6 +14,7 @@ voltage_parser = isolated_generator_parser.copy()
 power_factor_parser = isolated_generator_parser.copy()
 
 isolated_generator_parser.add_argument('Vt', required=False, type=float, location='json', default=480)
+isolated_generator_parser.add_argument('VtN', required=False, type=float, location='json', default=600)
 isolated_generator_parser.add_argument('Il', required=False, type=float, location='json', default=1200)
 isolated_generator_parser.add_argument('Fp', required=False, type=float, location='json', default=0.8)
 isolated_generator_parser.add_argument('Xs', required=False, type=float, location='json', default=0.1)

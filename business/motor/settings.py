@@ -20,15 +20,15 @@ class Settings(MotorBaseBusiness):
         settings['load'] = settings['load'] * 0.746 + settings['losses']
         settings = self.calculate_impedance(settings=settings)
         settings['Il'] = self.__calculate_il(settings=settings)
-        settings['Ia'], settings['Ia_angle'] = self.calculate_ia(settings=settings)
-        settings['Ea'], settings['Ea_angle'] = self.calculate_ea(settings=settings)
+        settings['Ia'], settings['theta'] = self.calculate_ia(settings=settings)
+        settings['Ea'], settings['delta'] = self.calculate_ea(settings=settings)
         return settings
 
     def __polar_params(self, settings: dict):
         return {
             'Vt': (settings['Vt'], 0),
-            'Ia': (settings['Ia'], settings['Ia_angle']),
-            'Ea': (settings['Ea'], settings['Ea_angle']),
+            'Ia': (settings['Ia'], settings['theta']),
+            'Ea': (settings['Ea'], settings['delta']),
             'RaIa': self.calculate_raia(settings=settings),
             'jXsIa': self.calculate_jxsia(settings=settings),
         }

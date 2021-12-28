@@ -30,7 +30,7 @@ class Voltage(GeneratorBaseBusiness):
 
     def __polar_params(self, settings: dict, Ia: tuple, delta: float):
         new_settings = deepcopy(settings)
-        new_settings['Ia'], new_settings['Ia_angle'] = Ia[0], Ia[1]
+        new_settings['Ia'], new_settings['theta'] = Ia[0], Ia[1]
         return {
             'Vt': (settings['Vt'], 0),
             'Ia': Ia,

@@ -8,7 +8,7 @@ class IsolatedGeneratorService(IsolatedGenerator):
         self.load = deepcopy(self.settings)
         self.voltage = deepcopy(self.settings)
         self.power_factor = deepcopy(self.settings)
-        self.settings_coords = self.get_coords(self.settings)
+        self.settings_coords = self.get_settings_coords(self.settings)
 
     def update_load(self, load: float):
         self.load['settings']['Ia'] = load

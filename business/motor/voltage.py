@@ -6,7 +6,7 @@ from business.base.motor import MotorBaseBusiness
 class Voltage(MotorBaseBusiness):
     def voltage_update(self, params: dict, settings_voltage: tuple, voltage: float):
         settings, polar_params, _ = params.values()
-        settings['Ea_angle'] = self.__calculate_ea_phase(settings_voltage=settings_voltage, voltage=voltage)
+        settings['delta'] = self.__calculate_ea_phase(settings_voltage=settings_voltage, voltage=voltage)
         settings['Ea'] = voltage
 
         polar_params = self.__polar_params(settings=settings, polar_params=polar_params)
@@ -17,9 +17,9 @@ class Voltage(MotorBaseBusiness):
         return self.get_coords(params=params)
 
     def __polar_params(self, settings: dict, polar_params: dict):
-        polar_params['Ea'] = (settings['Ea'], settings['Ea_angle'])
+        polar_params['Ea'] = (settings['Ea'], settings['delta'])
         polar_params['Ia'] = self.update_ia(settings=settings)
-        settings['Ia'], settings['Ia_angle'] = polar_params['Ia'][0], polar_params['Ia'][1]
+        settings['Ia'], settings['theta'] = polar_params['Ia'][0], polar_params['Ia'][1]
         polar_params['RaIa'] = self.calculate_raia(settings=settings)
         polar_params['jXsIa'] = self.calculate_jxsia(settings=settings)
 

@@ -13,25 +13,14 @@ class ConnectedGenerator(Settings, Load, Voltage, PowerFactor):
         return coords
 
     def __get_sliders(self, params: dict, initial_voltage: float):
-        # max_load = self.__calculate_slider_max_load(params=params)
-        #TODO change max load
+        max_load = params['settings']['Ia'] * 1.5
         min_ea = self.__calculate_slider_min_ea(params=params)
+        max_ea = params['settings']['VtN'] * 1.2
         return {
-            'load': {'min': 0, 'max': 2000, 'value': params['settings']['Ia']},
-            'voltage': {'min': min_ea, 'max': params['settings']['VtN'] * 1.2, 'value': initial_voltage},
+            'load': {'min': 0, 'max': max_load, 'value': params['settings']['Ia']},
+            'voltage': {'min': min_ea, 'max': max_ea, 'value': initial_voltage},
             'power_factor': {'min': 0, 'max': 1, 'value': params['settings']['Fp']}
         }
-
-    # def __calculate_slider_max_load(self, params):
-    #     params['settings']['load'] = params['settings']['losses']
-    #     while True:
-    #         try:
-    #             self.load_update(params=params)
-    #             params['settings']['load'] += 1
-    #         except ValueError:
-    #             break
-    #
-    #     return int((params['settings']['load'] / 0.746) - params['settings']['losses']) - 1
 
     def __calculate_slider_min_ea(self, params: dict):
         while True:

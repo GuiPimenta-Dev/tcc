@@ -17,7 +17,7 @@ class Load(GeneratorBaseBusiness):
         return self.get_coords(params=params)
 
     def __polar_params(self, settings: dict):
-        polar_params = {'Ia': (settings['Ia'], settings['Ia_angle']), 'RaIa': self.calculate_raia(settings=settings),
+        polar_params = {'Ia': (settings['Ia'], settings['theta']), 'RaIa': self.calculate_raia(settings=settings),
                         'jXsIa': self.calculate_jxsia(settings=settings),
                         'Ea': (settings['Ea'], self.__calculate_ea_phase(settings=settings))}
         polar_params['Vt'] = self.__calculate_vt(settings=settings, polar_params=polar_params)

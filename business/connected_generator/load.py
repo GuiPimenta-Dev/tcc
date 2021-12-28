@@ -20,7 +20,7 @@ class Load(GeneratorBaseBusiness):
     def __polar_params(self, settings: dict):
         return {
             'Vt': (settings['Vt'], 0),
-            'Ia': (settings['Ia'], settings['Ia_angle']),
+            'Ia': (settings['Ia'], settings['theta']),
             'RaIa': self.calculate_raia(settings=settings),
             'jXsIa': self.calculate_jxsia(settings=settings),
             'Ea': self.calculate_ea(settings=settings),

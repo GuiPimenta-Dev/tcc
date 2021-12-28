@@ -15,7 +15,7 @@ class Settings(GeneratorBaseBusiness):
 
     def __polar_params(self, settings: dict):
         return {
-            'Ia': (settings['Ia'], settings['Ia_angle']),
+            'Ia': (settings['Ia'], settings['theta']),
             'Vt': (settings['Vt'], 0),
             'RaIa': self.calculate_raia(settings=settings),
             'jXsIa': self.calculate_jxsia(settings=settings),

@@ -1,6 +1,6 @@
 from cmath import rect, phase
 from math import pi, sqrt, acos
-
+from utils.constants import DECIMAL_HOUSES
 
 class BaseBusiness:
 
@@ -61,13 +61,13 @@ class BaseBusiness:
         return (module, phase)
 
     def calculate_raia(self, settings: dict):
-        Ia = rect(settings['Ia'], self.rad(settings['Ia_angle']))
+        Ia = rect(settings['Ia'], self.rad(settings['theta']))
         Ra = settings['Ra'] * Ia
 
         return (abs(Ra), self.degree(phase(Ra)))
 
     def calculate_jxsia(self, settings: dict):
-        Ia = rect(settings['Ia'], self.rad(settings['Ia_angle']))
+        Ia = rect(settings['Ia'], self.rad(settings['theta']))
         jXsIa = settings['Xs'] * Ia
 
         return (abs(jXsIa), self.degree(phase(jXsIa)))
@@ -81,7 +81,7 @@ class BaseBusiness:
 
     @staticmethod
     def round(x: float):
-        return round(x, 2)
+        return round(x, DECIMAL_HOUSES)
 
     @staticmethod
     def degree(x: float):
