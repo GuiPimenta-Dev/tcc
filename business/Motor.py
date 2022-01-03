@@ -1,13 +1,12 @@
 from dataclasses import asdict
 
+from models.motor import MotorModel
 from .motor.load import Load
 from .motor.power_factor import PowerFactor
-from .motor.settings import Settings
 from .motor.voltage import Voltage
-from models.motor import MotorModel, PolarModel, RectangularModel
 
 
-class Motor(Settings, Load, Voltage, PowerFactor):
+class Motor(Load, Voltage, PowerFactor):
     def get_settings_coords(self, model: MotorModel, settings_voltage: tuple) -> dict:
         params = {
             'polar': asdict(model.polar),

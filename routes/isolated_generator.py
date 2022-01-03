@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask_restx import Resource, Namespace, reqparse
 
+from models.generator import GeneratorModel
 from app import logger
 from services.isolated_generator import IsolatedGeneratorService
 from utils.constants import ISOLATED_GENERATOR_ROUTE_PREFIX
@@ -20,8 +21,10 @@ isolated_generator_parser.add_argument('Fp', required=False, type=float, locatio
 isolated_generator_parser.add_argument('Xs', required=False, type=float, location='json', default=0.1)
 isolated_generator_parser.add_argument('Ra', required=False, type=float, location='json', default=0.015)
 isolated_generator_parser.add_argument('losses', required=False, type=float, location='json', default=70)
-isolated_generator_parser.add_argument('lagging', required=False, type=str, location='json', default='lagging')
-isolated_generator_parser.add_argument('delta', required=False, type=str, location='json', default='star')
+isolated_generator_parser.add_argument('lead_lag', required=False, type=str, location='json', choices=['lead', 'lag'],
+                                       default='lag')
+isolated_generator_parser.add_argument('delta_star', required=False, type=str, location='json',
+                                       choices=['delta', 'star'], default='star')
 
 load_parser.add_argument('load', required=False, type=float, location='json', default=30)
 
@@ -34,18 +37,8 @@ class BaseIsolatedGenerator(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def create_isolated_generator(self, args: dict):
-        if args['lagging'] == 'lagging':
-            args['lagging'] = True
-        else:
-            args['lagging'] = False
-
-        if args['delta'] == 'delta':
-            args['delta'] = True
-        else:
-            args['delta'] = False
-
-        BaseIsolatedGenerator.isolated_generator = IsolatedGeneratorService(params=args)
+    def create_isolated_generator(self, model: GeneratorModel):
+        BaseIsolatedGenerator.isolated_generator = IsolatedGeneratorService(model=model)
 
 
 @nms.route('')
@@ -56,7 +49,7 @@ class Settings(BaseIsolatedGenerator):
     def post(self):
         args = isolated_generator_parser.parse_args()
         try:
-            self.create_isolated_generator(args=args)
+            self.create_isolated_generator(model=GeneratorModel(**args))
             return self.isolated_generator.settings_coords
 
         except Exception as e:

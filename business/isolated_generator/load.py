@@ -2,36 +2,37 @@ from cmath import rect, phase
 from math import asin
 
 from business.base.generator import GeneratorBaseBusiness
+from models.generator import GeneratorModel
+from dataclasses import asdict
 
 
 class Load(GeneratorBaseBusiness):
 
-    def load_update(self, params: dict):
-        settings, _, _ = params.values()
-
-        polar_params = self.__polar_params(settings=settings)
+    def load_update(self, model: GeneratorModel):
+        model = self.__polar_params(model=model)
         params = {
-            'polar': polar_params,
-            'rect': self.rectangular_params(polar_params=polar_params)
+            'polar': asdict(model.polar),
+            'rect': self.rectangular_params(model=model)
         }
         return self.get_coords(params=params)
 
-    def __polar_params(self, settings: dict):
-        polar_params = {'Ia': (settings['Ia'], settings['theta']), 'RaIa': self.calculate_raia(settings=settings),
-                        'jXsIa': self.calculate_jxsia(settings=settings),
-                        'Ea': (settings['Ea'], self.__calculate_ea_phase(settings=settings))}
-        polar_params['Vt'] = self.__calculate_vt(settings=settings, polar_params=polar_params)
-        return polar_params
+    def __polar_params(self, model: GeneratorModel):
+        model.polar.Ia = (model.Ia, model.theta)
+        model.polar.RaIa = self.calculate_raia(model=model)
+        model.polar.jXsIa = self.calculate_jxsia(model=model)
+        model.polar.Ea = (model.Ea, self.__calculate_ea_phase(model=model))
 
-    def __calculate_ea_phase(self, settings: dict):
-        phase = (abs(settings['Xs']) * settings['Ia'] * settings['Fp']) / settings['Ea']
+        model.polar.Vt = self.__calculate_vt(model=model)
+        return model
 
+    def __calculate_ea_phase(self, model: GeneratorModel):
+        phase = (abs(model.Xs) * model.Ia * model.Fp) / model.Ea
         return self.degree(asin(phase))
 
-    def __calculate_vt(self, settings: dict, polar_params: dict):
-        Ea = rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1]))
-        Ia = rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1]))
-        Vt = Ea - settings['Ra'] * Ia - settings['Xs'] * Ia
+    def __calculate_vt(self, model: GeneratorModel):
+        Ea = rect(model.polar.Ea[0], self.rad(model.polar.Ea[1]))
+        Ia = rect(model.polar.Ia[0], self.rad(model.polar.Ia[1]))
+        Vt = Ea - model.Ra * Ia - model.Xs * Ia
 
         voltage_module = abs(Vt)
         voltage_phase = self.degree(phase(Vt))
