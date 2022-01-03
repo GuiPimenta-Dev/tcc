@@ -10,14 +10,14 @@ class BaseBusiness:
             'labels': self.__get_labels(params=params['polar']),
         }
 
-    def rectangular_params(self, polar_params: dict):
+    def rectangular_params(self, model: object):
         return {
-            'Vt': rect(polar_params['Vt'][0], self.rad(polar_params['Vt'][1])),
-            'Ia': rect(polar_params['Ia'][0], self.rad(polar_params['Ia'][1])),
-            'Ea': rect(polar_params['Ea'][0], self.rad(polar_params['Ea'][1])),
-            'RaIa': rect(polar_params['RaIa'][0], self.rad(polar_params['RaIa'][1])),
+            'Vt': rect(model.polar.Vt[0], self.rad(model.polar.Vt[1])),
+            'Ia': rect(model.polar.Ia[0], self.rad(model.polar.Ia[1])),
+            'Ea': rect(model.polar.Ea[0], self.rad(model.polar.Ea[1])),
+            'RaIa': rect(model.polar.RaIa[0], self.rad(model.polar.RaIa[1])),
             'jXsIa': rect(
-                polar_params['jXsIa'][0], self.rad(polar_params['jXsIa'][1])
+                model.polar.jXsIa[0], self.rad(model.polar.jXsIa[1])
             ),
         }
 
@@ -49,26 +49,26 @@ class BaseBusiness:
             'jXsIa': f'{self.round(params["jXsIa"][0])} ∠ {self.round(params["jXsIa"][1])}°'
         }
 
-    def calculate_ia(self, settings: dict):
-        module = settings['Il']
-        if settings['delta']:
+    def calculate_ia(self, model: object):
+        module = model.Il
+        if model.delta_star == 'delta':
             module = module / sqrt(3)
 
-        phase = self.degree(acos(settings['Fp']))
-        if settings['lagging'] and phase != 0.0:
+        phase = self.degree(acos(model.Fp))
+        if model.lead_lag == 'lag' and phase != 0.0:
             phase *= -1
 
         return (module, phase)
 
-    def calculate_raia(self, settings: dict):
-        Ia = rect(settings['Ia'], self.rad(settings['theta']))
-        Ra = settings['Ra'] * Ia
+    def calculate_raia(self, model: object):
+        Ia = rect(model.Ia, self.rad(model.theta))
+        Ra = model.Ra * Ia
 
         return (abs(Ra), self.degree(phase(Ra)))
 
-    def calculate_jxsia(self, settings: dict):
-        Ia = rect(settings['Ia'], self.rad(settings['theta']))
-        jXsIa = settings['Xs'] * Ia
+    def calculate_jxsia(self, model: object):
+        Ia = rect(model.Ia, self.rad(model.theta))
+        jXsIa = model.Xs * Ia
 
         return (abs(jXsIa), self.degree(phase(jXsIa)))
 

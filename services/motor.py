@@ -1,23 +1,22 @@
 from copy import deepcopy
 from business.Motor import Motor
+from models.motor import MotorModel
 
 
 class MotorService(Motor):
-    def __init__(self, params: dict):
-        self.settings = self.create_motor(params)
-        self.load = deepcopy(self.settings)
-        self.voltage = deepcopy(self.settings)
-        self.power_factor = deepcopy(self.settings)
-        self.settings_coords = self.get_settings_coords(params=self.settings,
-                                                        settings_voltage=self.settings['polar']['Ea'])
+    def __init__(self, model: MotorModel):
+        self.load = deepcopy(model)
+        self.voltage = deepcopy(model)
+        self.power_factor = deepcopy(model)
+        self.settings_coords = self.get_settings_coords(model=model, settings_voltage=self.voltage.polar.Ea)
 
     def update_load(self, load: float):
-        self.load['settings']['load'] = load * 0.746 + self.load['settings']['losses']
-        return self.load_update(params=self.load)
+        self.load.hp_load = load * 0.746 + self.load.losses
+        return self.load_update(model=self.load)
 
     def update_ea(self, voltage: float):
-        return self.voltage_update(params=self.voltage, settings_voltage=self.settings['polar']['Ea'], voltage=voltage)
+        return self.voltage_update(model=self.voltage, settings_voltage=self.voltage.polar.Ea, voltage=voltage)
 
     def update_fp(self, power_factor: float):
-        self.power_factor['settings']['Fp'] = power_factor
-        return self.power_factor_update(params=self.power_factor)
+        self.power_factor.Fp = power_factor
+        return self.power_factor_update(model=self.power_factor)

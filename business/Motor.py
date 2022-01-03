@@ -1,42 +1,49 @@
+from dataclasses import asdict
+
 from .motor.load import Load
 from .motor.power_factor import PowerFactor
 from .motor.settings import Settings
 from .motor.voltage import Voltage
+from models.motor import MotorModel, PolarModel, RectangularModel
 
 
 class Motor(Settings, Load, Voltage, PowerFactor):
-    def get_settings_coords(self, params, settings_voltage):
-        coords = self.get_coords(params)
+    def get_settings_coords(self, model: MotorModel, settings_voltage: tuple) -> dict:
+        params = {
+            'polar': asdict(model.polar),
+            'rect': asdict(model.rectangular)
+        }
+        coords = self.get_coords(params=params)
         initial_voltage = float(coords['labels']['Ea'].split(' ')[0])
-        sliders = self.__get_sliders(params=params, settings_voltage=settings_voltage, initial_voltage=initial_voltage)
+        sliders = self.__get_sliders(model=model, settings_voltage=settings_voltage, initial_voltage=initial_voltage)
         coords.update({'sliders': sliders})
         return coords
 
-    def __get_sliders(self, params: dict, settings_voltage: tuple, initial_voltage: float):
-        max_load = self.__calculate_slider_max_load(params=params)
-        min_ea = self.__calculate_slider_min_ea(params=params, settings_voltage=settings_voltage)
+    def __get_sliders(self, model: MotorModel, settings_voltage: tuple, initial_voltage: float):
+        max_load = self.__calculate_slider_max_load(model=model)
+        min_ea = self.__calculate_slider_min_ea(model=model, settings_voltage=settings_voltage)
         return {
-            'load': {'min': 0, 'max': max_load, 'value': params['settings']['kw_load']},
-            'voltage': {'min': min_ea, 'max': self.round(params['settings']['VtN'] * 1.2), 'value': initial_voltage},
-            'power_factor': {'min': 0, 'max': 1, 'value': params['settings']['Fp']}
+            'load': {'min': 0, 'max': max_load, 'value': model.kw_load},
+            'voltage': {'min': min_ea, 'max': self.round(model.VtN * 1.2), 'value': initial_voltage},
+            'power_factor': {'min': 0, 'max': 1, 'value': model.Fp}
         }
 
-    def __calculate_slider_max_load(self, params):
-        params['settings']['load'] = params['settings']['losses']
+    def __calculate_slider_max_load(self, model: MotorModel):
+        model.hp_load = model.losses
         while True:
             try:
-                self.load_update(params=params)
-                params['settings']['load'] += 1
+                self.load_update(model=model)
+                model.hp_load += 1
             except ValueError:
                 break
 
-        return int((params['settings']['load'] / 0.746) - params['settings']['losses']) - 1
+        return int((model.hp_load / 0.746) - model.losses) - 1
 
-    def __calculate_slider_min_ea(self, params: dict, settings_voltage: tuple):
-        voltage = settings_voltage[0]
+    def __calculate_slider_min_ea(self, model: MotorModel, settings_voltage: tuple):
+        voltage, _ = settings_voltage
         while True:
             try:
-                self.voltage_update(params=params, settings_voltage=settings_voltage, voltage=voltage)
+                self.voltage_update(model=model, settings_voltage=settings_voltage, voltage=voltage)
                 voltage -= 1
             except ValueError:
                 break

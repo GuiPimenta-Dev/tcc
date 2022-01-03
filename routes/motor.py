@@ -4,6 +4,7 @@ from flask_restx import Resource, Namespace, reqparse
 from app import logger
 from services.motor import MotorService
 from utils.constants import MOTOR_ROUTE_PREFIX
+from models.motor import MotorModel
 
 bp = Blueprint('motor', __name__, url_prefix=MOTOR_ROUTE_PREFIX)
 nms = Namespace('Motor')
@@ -13,15 +14,15 @@ load_parser = motor_parser.copy()
 voltage_parser = motor_parser.copy()
 power_factor_parser = motor_parser.copy()
 
-
 motor_parser.add_argument('Vt', required=False, type=float, location='json', default=208)
 motor_parser.add_argument('VtN', required=False, type=float, location='json', default=308)
 motor_parser.add_argument('Fp', required=False, type=float, location='json', default=0.8)
-motor_parser.add_argument('lagging', required=False, type=str, location='json', default=False)
-motor_parser.add_argument('delta', required=False, type=bool, location='json', default=True)
+motor_parser.add_argument('lead_lag', required=False, type=str, location='json', choices=['lead', 'lag'],
+                          default='lead')
+motor_parser.add_argument('delta_star', required=False, type=bool, location='json', choices=['delta', 'star'], default='delta')
 motor_parser.add_argument('Xs', required=False, type=float, location='json', default=2.5)
 motor_parser.add_argument('Ra', required=False, type=float, location='json', default=0)
-motor_parser.add_argument('load', required=False, type=float, location='json', default=15)
+motor_parser.add_argument('kw_load', required=False, type=float, location='json', default=15)
 motor_parser.add_argument('losses', required=False, type=float, location='json', default=2.5)
 
 load_parser.add_argument('load', required=False, type=float, location='json', default=30)
@@ -35,12 +36,8 @@ class BaseMotor(Resource):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def create_motor(self, args: dict):
-        if args['lagging'] == 'lagging':
-            args['lagging'] = True
-        else:
-            args['lagging'] = False
-        BaseMotor.motor = MotorService(params=args)
+    def create_motor(self, model: MotorModel):
+        BaseMotor.motor = MotorService(model=model)
 
 
 @nms.route('')
@@ -51,7 +48,7 @@ class Settings(BaseMotor):
     def post(self):
         args = motor_parser.parse_args()
         try:
-            self.create_motor(args=args)
+            self.create_motor(model=MotorModel(**args))
             return self.motor.settings_coords
 
         except Exception as e:
