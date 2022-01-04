@@ -1,23 +1,23 @@
 from copy import deepcopy
 from business.ConnectedGenerator import ConnectedGenerator
+from models.generator import GeneratorModel
 
 
 class ConnectedGeneratorService(ConnectedGenerator):
-    def __init__(self, params: dict):
-        self.settings = self.create_generator(params)
-        self.load = deepcopy(self.settings)
-        self.voltage = deepcopy(self.settings)
-        self.power_factor = deepcopy(self.settings)
-        self.settings_coords = self.get_settings_coords(self.settings)
+    def __init__(self, model: GeneratorModel):
+        self.load = deepcopy(model)
+        self.voltage = deepcopy(model)
+        self.power_factor = deepcopy(model)
+        self.settings_coords = self.get_settings_coords(model)
 
     def update_load(self, load: float):
-        self.load['settings']['Ia'] = load
-        return self.load_update(settings=self.load['settings'])
+        self.load.Ia = load
+        return self.load_update(model=self.load)
 
     def update_vt(self, voltage: float):
-        self.voltage['settings']['Ea'] = voltage
-        return self.voltage_update(settings=self.voltage['settings'])
+        self.voltage.Ea = voltage
+        return self.voltage_update(model=self.voltage)
 
     def update_fp(self, power_factor: float):
-        self.power_factor['settings']['Fp'] = power_factor
-        return self.power_factor_update(params=self.power_factor)
+        self.power_factor.Fp = power_factor
+        return self.power_factor_update(model=self.power_factor)
