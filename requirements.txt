@@ -9,6 +9,7 @@ colorama==0.4.4
 Flask==2.0.2
 Flask-Cors==3.0.10
 flask-restx==0.5.1
+gunicorn==20.1.0
 h11==0.12.0
 httpcore==0.13.7
 idna==3.3
