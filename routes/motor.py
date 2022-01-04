@@ -19,7 +19,6 @@ motor_parser.add_argument('VtN', required=False, type=float, location='json', de
 motor_parser.add_argument('Fp', required=False, type=float, location='json', default=0.8)
 motor_parser.add_argument('lead_lag', required=False, type=str, location='json', choices=['lead', 'lag'],
                           default='lead')
-motor_parser.add_argument('delta_star', required=False, type=bool, location='json', choices=['delta', 'star'], default='delta')
 motor_parser.add_argument('Xs', required=False, type=float, location='json', default=2.5)
 motor_parser.add_argument('Ra', required=False, type=float, location='json', default=0)
 motor_parser.add_argument('kw_load', required=False, type=float, location='json', default=15)

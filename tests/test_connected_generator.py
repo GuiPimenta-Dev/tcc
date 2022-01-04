@@ -21,7 +21,7 @@ class TestConnectedGenerator:
         result = service.settings_coords
         assert result == expected_result
 
-    def test_update_load(self):
+    def test_update_œload(self):
         expected_result = {'coords': {'Vt': (13.5, 0.0), 'Ia': (45.0, -33.75), 'Ea': (17.55, 3.9937499999999995),
                                       'RaIa': (0.68, -0.50625), 'jXsIa': (3.37, 4.5)},
                            'labels': {'Vt': '480 ∠ 0°', 'Ia': '2000 ∠ -36.87°', 'Ea': '639.95 ∠ 12.82°',

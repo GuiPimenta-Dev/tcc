@@ -13,7 +13,6 @@ class MotorModel(MotorBaseBusiness):
     VtN: float
     Fp: float
     lead_lag: str
-    delta_star: str
     Xs: [float, complex]
     Ra: [float, complex]
     kw_load: float
@@ -26,6 +25,7 @@ class MotorModel(MotorBaseBusiness):
     delta: float = None
     Z: complex = None
     hp_load: float = None
+    delta_star: str = 'delta'
     polar: PolarModel = None
     rectangular: RectangularModel = None
 
