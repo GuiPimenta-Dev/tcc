@@ -20,14 +20,16 @@ class GeneratorModel(GeneratorBaseBusiness):
     theta: float = None
     Ea: float = None
     delta: float = None
-    Z: complex = None
     polar: PolarModel = None
     rectangular: RectangularModel = None
+
+    @property
+    def Z(self):
+        return self.Ra + self.Xs
 
     def __post_init__(self):
         self.Xs = complex(0, self.Xs)
         self.Ra = complex(self.Ra, 0)
-        self.Z = self.Ra + self.Xs
         self.Ia, self.theta = self.calculate_ia(model=self)
         self.Ea, self.delta = self.calculate_ea(model=self)
         self.polar = polar_params(model=self)
