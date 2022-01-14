@@ -19,10 +19,10 @@ class Motor(Load, Voltage, PowerFactor):
         return coords
 
     def __get_sliders(self, model: MotorModel, settings_voltage: tuple, initial_voltage: float):
-        max_load = self.__calculate_slider_max_load(model=model)
+        # max_load = self.__calculate_slider_max_load(model=model)
         min_ea = self.__calculate_slider_min_ea(model=model, settings_voltage=settings_voltage)
         return {
-            'load': {'min': 0, 'max': max_load, 'value': model.kw_load},
+            'load': {'min': 0, 'max': model.kw_load + 15, 'value': model.kw_load},
             'voltage': {'min': min_ea, 'max': self.round(model.VtN * 1.2), 'value': initial_voltage},
             'power_factor': {'min': 0, 'max': 1, 'value': model.Fp}
         }
