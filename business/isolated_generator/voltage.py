@@ -1,7 +1,6 @@
-from cmath import rect, phase
-from copy import deepcopy
+from cmath import polar
+from cmath import rect
 from dataclasses import asdict
-from math import sin, sqrt, cos, acos
 
 from business.base.generator import GeneratorBaseBusiness
 from models.generator import GeneratorModel
@@ -9,42 +8,33 @@ from models.generator import GeneratorModel
 
 class Voltage(GeneratorBaseBusiness):
     def voltage_update(self, model: GeneratorModel):
-        # TODO fix this logic
-        delta = self.calculate_new_delta(model=model)
-        Ia_cos_theta = model.Ia * model.Fp
-        Ia_sin_theta = self.__calculate_ia_sin_theta(model=model, delta=delta, Ia_cos_theta=Ia_cos_theta)
-        Ia = self.__calculate_ia(Ia_sin_theta=Ia_sin_theta, Ia_cos_theta=Ia_cos_theta)
-        Vt = self.__calculate_vt(model=model, Ia_sin_theta=Ia_sin_theta, Ia_cos_theta=Ia_cos_theta, delta=delta)
-        model = self.__polar_params(model=model, Vt=Vt, Ia=Ia, delta=delta)
+        self.__calculate_new_Ia(model=model)
+        self.__calculate_new_Vt(model=model)
+        self.__calculate_new_theta(model=model)
+
+        self.__update_polar_params(model=model)
 
         params = {
-            'polar': asdict(model.polar),
-            'rect': self.rectangular_params(model=model)
+            "polar": asdict(model.polar),
+            "rect": self.rectangular_params(model=model),
         }
 
         return self.get_coords(params=params)
 
-    def __calculate_ia_sin_theta(self, model: GeneratorModel, delta: float, Ia_cos_theta: float):
-        Ea_sin_theta = model.Ea * sin(self.rad(delta))
-        Xs_Ia_cos_theta = abs(model.Xs) * Ia_cos_theta
-        return (Ea_sin_theta - Xs_Ia_cos_theta) / abs(model.Ra)
+    def __calculate_new_Ia(self, model: GeneratorModel):
+        Ia = polar(complex(model.Ea, 0) / (model.Z + model.Zl))
+        model.Ia, model.phi = Ia[0], self.degree(Ia[1])
 
-    def __calculate_ia(self, Ia_sin_theta, Ia_cos_theta):
-        module_ia = sqrt(abs(Ia_cos_theta) ** 2 + abs(Ia_sin_theta) ** 2)
-        phase_ia = acos(Ia_cos_theta / module_ia)
-        return (module_ia, phase_ia)
+    def __calculate_new_Vt(self, model: GeneratorModel):
+        Vt = polar(rect(model.Ea, 0) - (model.Z * rect(model.Ia, self.rad(model.phi))))
+        model.Vt, model.delta = Vt[0], self.degree(Vt[1])
 
-    def __calculate_vt(self, model: GeneratorModel, Ia_sin_theta, Ia_cos_theta, delta):
-        Ea_cos_delta = model.Ea * cos(self.rad(delta))
-        Vt = Ea_cos_delta - (abs(model.Ra) * Ia_cos_theta) - (abs(model.Xs) * Ia_sin_theta)
-        return (Vt, 0)
+    def __calculate_new_theta(self, model: GeneratorModel):
+        model.theta = model.phi - model.delta
 
-    def __polar_params(self, model: GeneratorModel, Ia: tuple, Vt: tuple, delta):
-        new_model = deepcopy(model)
-        new_model.polar.Vt = Vt
-        new_model.Ia, new_model.theta = Ia
-        new_model.polar.RaIa = self.calculate_raia(model=new_model)
-        new_model.polar.jXsIa = self.calculate_jxsia(model=new_model)
-        new_model.polar.Ea = (model.Ea, delta)
-        return new_model
-
+    def __update_polar_params(self, model: GeneratorModel):
+        model.polar.Vt = (model.Vt, 0)
+        model.polar.Ia = (model.Ia, model.theta)
+        model.polar.Ea = (model.Ea, model.delta)
+        model.polar.RaIa = self.calculate_raia(model=model)
+        model.polar.jXsIa = self.calculate_jxsia(model=model)

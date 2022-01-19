@@ -9,35 +9,28 @@ from copy import deepcopy
 
 class Voltage(GeneratorBaseBusiness):
     def voltage_update(self, model: GeneratorModel):
-        delta = self.__calculate_new_delta(model=model)
-        Ia = self.__calculate_new_ia(model=model, delta=delta)
-
-        model = self.__polar_params(model=model, Ia=Ia, delta=delta)
+        self.__calculate_new_delta(model=model)
+        self.__calculate_new_ia_and_theta(model=model)
+        self.__update_polar_params(model=model)
 
         params = {
-            'polar': asdict(model.polar),
-            'rect': self.rectangular_params(model=model)
+            "polar": asdict(model.polar),
+            "rect": self.rectangular_params(model=model),
         }
         return self.get_coords(params=params)
 
     def __calculate_new_delta(self, model: GeneratorModel):
-        return self.degree(asin((model.Ia * model.Fp * abs(model.Xs)) / model.Ea))
+        model.delta = self.degree(asin((model.Ia * model.Fp * abs(model.Xs)) / model.Ea))
 
-    def __calculate_new_ia(self, model: GeneratorModel, delta: float):
+    def __calculate_new_ia_and_theta(self, model: GeneratorModel):
         Vt = rect(model.Vt, 0)
-        Ea = rect(model.Ea, self.rad(delta))
+        Ea = rect(model.Ea, self.rad(model.delta))
         Ia = (Ea - Vt) / model.Z
 
-        current_module = abs(Ia)
-        current_phase = self.degree(phase(Ia))
-        return (current_module, current_phase)
+        model.Ia, model.theta = abs(Ia), self.degree(phase(Ia))
 
-    def __polar_params(self, model: GeneratorModel, Ia: tuple, delta: float):
-        new_model = deepcopy(model)
-        new_model.polar.Vt = (model.Vt, 0)
-        new_model.Ia, new_model.theta = Ia
-        new_model.polar.Ia = Ia
-        new_model.polar.RaIa = self.calculate_raia(model=new_model)
-        new_model.polar.jXsIa = self.calculate_jxsia(model=new_model)
-        new_model.polar.Ea = (model.Ea, delta)
-        return new_model
+    def __update_polar_params(self, model: GeneratorModel):
+        model.polar.Ea = (model.Ea, model.delta)
+        model.polar.Ia = (model.Ia, model.theta)
+        model.polar.RaIa = self.calculate_raia(model=model)
+        model.polar.jXsIa = self.calculate_jxsia(model=model)

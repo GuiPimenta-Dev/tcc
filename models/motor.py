@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from math import sqrt
 
 from business.base.motor import MotorBaseBusiness
-from .base import PolarModel, RectangularModel, polar_params, rectangular_params
+from . import PolarModel, RectangularModel, polar_params, rectangular_params
 
 
 @dataclass
@@ -21,7 +21,7 @@ class MotorModel(MotorBaseBusiness):
     theta: float = None
     Ea: float = None
     delta: float = None
-    delta_star: str = 'delta'
+    delta_star: str = "delta"
     polar: PolarModel = None
     rectangular: RectangularModel = None
 
