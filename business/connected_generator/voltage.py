@@ -36,6 +36,7 @@ class Voltage(GeneratorBaseBusiness):
         new_model = deepcopy(model)
         new_model.polar.Vt = (model.Vt, 0)
         new_model.Ia, new_model.theta = Ia
+        new_model.polar.Ia = Ia
         new_model.polar.RaIa = self.calculate_raia(model=new_model)
         new_model.polar.jXsIa = self.calculate_jxsia(model=new_model)
         new_model.polar.Ea = (model.Ea, delta)

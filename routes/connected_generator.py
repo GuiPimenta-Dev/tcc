@@ -16,10 +16,10 @@ power_factor_parser = connected_generator_parser.copy()
 
 connected_generator_parser.add_argument('Vt', required=False, type=float, location='json', default=480)
 connected_generator_parser.add_argument('VtN', required=False, type=float, location='json', default=600)
-connected_generator_parser.add_argument('Il', required=False, type=float, location='json', default=1200)
+connected_generator_parser.add_argument('Il', required=False, type=float, location='json', default=120)
 connected_generator_parser.add_argument('Fp', required=False, type=float, location='json', default=0.8)
-connected_generator_parser.add_argument('Xs', required=False, type=float, location='json', default=0.1)
-connected_generator_parser.add_argument('Ra', required=False, type=float, location='json', default=0.015)
+connected_generator_parser.add_argument('Xs', required=False, type=float, location='json', default=2.5)
+connected_generator_parser.add_argument('Ra', required=False, type=float, location='json', default=0)
 connected_generator_parser.add_argument('losses', required=False, type=float, location='json', default=70)
 connected_generator_parser.add_argument('lead_lag', required=False, type=str, location='json', choices=['lead', 'lag'],
                                         default='lag')
@@ -80,7 +80,7 @@ class Voltage(BaseConnectedGenerator):
     def put(self):
         vt = voltage_parser.parse_args()['Ea']
         try:
-            return self.connected_generator.update_vt(voltage=vt)
+            return self.connected_generator.update_ea(voltage=vt)
 
         except Exception as e:
             logger.info(str(e))
