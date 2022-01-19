@@ -20,7 +20,7 @@ class ConnectedGenerator(Load, Voltage, PowerFactor):
         min_ea = self.__calculate_slider_min_ea(model=model)
         max_ea = model.VtN * 1.2
         return {
-            "load": {"min": 0, "max": max_load, "value": model.Ia},
+            "load": {"min": 0, "max": max_load, "value": model.Il},
             "voltage": {"min": min_ea, "max": max_ea, "value": initial_voltage},
             "power_factor": {"min": 0, "max": 1, "value": model.Fp},
         }

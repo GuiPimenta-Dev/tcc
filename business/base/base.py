@@ -32,7 +32,7 @@ class BaseBusiness:
 
         return {
             "Vt": (
-                self.round(params["Vt"].real * coef),
+                self.round(params["Vt"].real * coef) ,
                 self.round(params["Vt"].imag) * coef,
             ),
             "Ia": (
