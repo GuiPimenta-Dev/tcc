@@ -10,7 +10,7 @@ class IsolatedGenerator(Load, Voltage, PowerFactor):
         self._calculate_scale(model=model.rectangular)
 
         self._update_rectangular_params(model=model)
-        coords = self._get_coords(model=model)
+        coords = self._get_scaled_coords(model=model)
         initial_voltage = float(coords["labels"]["Ea"].split(" ")[0])
         sliders = self.__get_sliders(model=model, initial_voltage=initial_voltage)
         coords.update({"sliders": sliders})

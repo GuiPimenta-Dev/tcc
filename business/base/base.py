@@ -6,17 +6,11 @@ from models import MachineModel, PolarModel, RectangularModel
 
 
 class BaseBusiness:
-    scale = 0
+    scale: float
 
     def _calculate_scale(self, model: RectangularModel):
         max_coord = self.__calculate_max_coord(model=model)
         self.scale = 45 / max_coord
-
-    def _get_coords(self, model: Union[MachineModel, Any]):
-        return {
-            "coords": self.__get_coords(model=model.rectangular),
-            "labels": self.__get_labels(model=model.polar),
-        }
 
     def _get_scaled_coords(self, model: Union[MachineModel, Any]):
         return {
@@ -75,33 +69,6 @@ class BaseBusiness:
             "jXsIa": (
                 self.round(model.jXsIa.real * self.scale),
                 self.round(model.jXsIa.imag) * self.scale,
-            ),
-        }
-
-    def __get_coords(self, model: RectangularModel) -> dict:
-        max_coord = self.__calculate_max_coord(model=model)
-        coef = 45 / max_coord
-
-        return {
-            "Vt": (
-                self.round(model.Vt.real * coef),
-                self.round(model.Vt.imag) * coef,
-            ),
-            "Ia": (
-                self.round(model.Ia.real * coef),
-                self.round(model.Ia.imag) * coef,
-            ),
-            "Ea": (
-                self.round(model.Ea.real * coef),
-                self.round(model.Ea.imag) * coef,
-            ),
-            "RaIa": (
-                self.round(model.RaIa.real * coef),
-                self.round(model.RaIa.imag) * coef,
-            ),
-            "jXsIa": (
-                self.round(model.jXsIa.real * coef),
-                self.round(model.jXsIa.imag) * coef,
             ),
         }
 
