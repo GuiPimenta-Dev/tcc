@@ -34,6 +34,6 @@ class Voltage(GeneratorBaseBusiness):
     def __update_polar_params(self, model: GeneratorModel):
         model.polar.Vt = (model.Vt, 0)
         model.polar.Ia = (model.Ia, model.theta)
-        model.polar.Ea = (model.Ea, model.delta)
+        model.polar.Ea = (model.Ea, -1 * model.delta)
         model.polar.RaIa = self.calculate_raia(model=model)
         model.polar.jXsIa = self.calculate_jxsia(model=model)
