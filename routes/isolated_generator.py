@@ -90,9 +90,9 @@ class Voltage(BaseIsolatedGenerator):
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
-        vt = voltage_parser.parse_args()["Ea"]
+        ea = voltage_parser.parse_args()["Ea"]
         try:
-            return self.isolated_generator.update_vt(voltage=vt)
+            return self.isolated_generator.update_ea(voltage=ea)
 
         except Exception as e:
             logger.info(str(e))

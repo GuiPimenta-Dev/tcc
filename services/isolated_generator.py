@@ -14,7 +14,7 @@ class IsolatedGeneratorService(IsolatedGenerator):
         self.load.Ia = load
         return self.load_update(model=self.load)
 
-    def update_vt(self, voltage: float):
+    def update_ea(self, voltage: float):
         self.voltage.Ea = voltage
         return self.voltage_update(model=self.voltage)
 

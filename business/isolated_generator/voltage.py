@@ -18,7 +18,6 @@ class Voltage(GeneratorBaseBusiness):
             "polar": asdict(model.polar),
             "rect": self.rectangular_params(model=model),
         }
-
         return self.get_coords(params=params)
 
     def __calculate_new_Ia(self, model: GeneratorModel):

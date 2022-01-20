@@ -1,16 +1,16 @@
+from cmath import rect, phase
 from dataclasses import asdict
+from math import asin
 
 from business.base.generator import GeneratorBaseBusiness
 from models.generator import GeneratorModel
-from math import asin
-from cmath import rect, phase
-from copy import deepcopy
 
 
 class Voltage(GeneratorBaseBusiness):
     def voltage_update(self, model: GeneratorModel):
         self.__calculate_new_delta(model=model)
         self.__calculate_new_ia_and_theta(model=model)
+
         self.__update_polar_params(model=model)
 
         params = {
