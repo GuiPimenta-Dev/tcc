@@ -27,7 +27,7 @@ class GeneratorModel(GeneratorBaseBusiness):
     def __post_init__(self):
         self.Xs = complex(0, self.Xs)
         self.Ra = complex(self.Ra, 0)
-        self.Ia, self.theta = self.calculate_ia(model=self)
+        self.Ia, self.theta = self._calculate_ia(model=self)
         self.Ea, self.delta = self.calculate_new_ea_and_delta(model=self)
         self.phi = self.delta + self.theta
         self.polar = polar_params(model=self)

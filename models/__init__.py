@@ -20,13 +20,23 @@ class RectangularModel:
     RaIa: complex
 
 
+@dataclass
+class MachineModel:
+    Ia: float
+    theta: float
+    Ea: float
+    delta: float
+    polar: PolarModel
+    rectangular: RectangularModel
+
+
 def polar_params(model):
     params = {
         "Vt": (model.Vt, 0),
         "Ia": (model.Ia, model.theta),
         "Ea": (model.Ea, model.delta),
-        "RaIa": model.calculate_raia(model=model),
-        "jXsIa": model.calculate_jxsia(model=model),
+        "RaIa": model._calculate_raia(model=model),
+        "jXsIa": model._calculate_jxsia(model=model),
     }
     return PolarModel(**params)
 

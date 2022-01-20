@@ -66,23 +66,12 @@ class TestIsolatedGenerator:
 
     def test_update_ea(self):
         expected_result = {
-            "coords": {
-                "Vt": (32.26, 0.0),
-                "Ia": (6.45, -4.838684131958277),
-                "Ea": (45.0, -15.645384745459022),
-                "RaIa": (0.65, -0.48356236106856915),
-                "jXsIa": (12.1, 16.12894710652759),
-            },
-            "labels": {
-                "Vt": "316.2 ∠ 0°",
-                "Ia": "79.05 ∠ -36.87°",
-                "Ea": "467 ∠ -19.17°",
-                "RaIa": "7.91 ∠ -36.87°",
-                "jXsIa": "197.63 ∠ 53.13°",
-            },
-        }
+            'coords': {'Vt': (32.26, 0.0), 'Ia': (6.45, -4.838684131958277), 'Ea': (45.0, 15.645384745459022),
+                       'RaIa': (0.65, -0.48356236106856915), 'jXsIa': (12.1, 16.12894710652759)},
+            'labels': {'Vt': '316.2 ∠ 0°', 'Ia': '79.05 ∠ -36.87°', 'Ea': '467 ∠ 19.17°', 'RaIa': '7.91 ∠ -36.87°',
+                       'jXsIa': '197.63 ∠ 53.13°'}}
 
-        result = service.update_vt(voltage=467)
+        result = service.update_ea(voltage=467)
         assert result == expected_result
 
     def test_update_fp(self):

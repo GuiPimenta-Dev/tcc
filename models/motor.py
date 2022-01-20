@@ -37,7 +37,7 @@ class MotorModel(MotorBaseBusiness):
         self.Xs = complex(0, self.Xs)
         self.Ra = complex(self.Ra, 0)
         self.hp_load = self.kw_load * 0.746 + self.losses
-        self.Ia, self.theta = self.calculate_ia(model=self)
+        self.Ia, self.theta = self._calculate_ia(model=self)
         self.Ea, self.delta = self.calculate_ea(model=self)
         self.polar = polar_params(model=self)
         self.rectangular = rectangular_params(model=self)

@@ -11,14 +11,10 @@ class Voltage(GeneratorBaseBusiness):
         self.__calculate_new_Ia(model=model)
         self.__calculate_new_Vt(model=model)
         self.__calculate_new_theta(model=model)
-
         self.__update_polar_params(model=model)
+        self._update_rectangular_params(model=model)
 
-        params = {
-            "polar": asdict(model.polar),
-            "rect": self.rectangular_params(model=model),
-        }
-        return self.get_coords(params=params)
+        return self._get_coords(model=model)
 
     def __calculate_new_Ia(self, model: GeneratorModel):
         Ia = polar(complex(model.Ea, 0) / (model.Z + model.Zl))
@@ -35,5 +31,5 @@ class Voltage(GeneratorBaseBusiness):
         model.polar.Vt = (model.Vt, 0)
         model.polar.Ia = (model.Ia, model.theta)
         model.polar.Ea = (model.Ea, -1 * model.delta)
-        model.polar.RaIa = self.calculate_raia(model=model)
-        model.polar.jXsIa = self.calculate_jxsia(model=model)
+        model.polar.RaIa = self._calculate_raia(model=model)
+        model.polar.jXsIa = self._calculate_jxsia(model=model)

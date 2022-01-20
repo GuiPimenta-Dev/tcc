@@ -8,8 +8,8 @@ from .connected_generator.voltage import Voltage
 
 class ConnectedGenerator(Load, Voltage, PowerFactor):
     def get_settings_coords(self, model: GeneratorModel):
-        params = {"polar": asdict(model.polar), "rect": asdict(model.rectangular)}
-        coords = self.get_coords(params)
+        self._update_rectangular_params(model=model)
+        coords = self._get_coords(model=model)
         initial_voltage = float(coords["labels"]["Ea"].split(" ")[0])
         sliders = self.__get_sliders(model=model, initial_voltage=initial_voltage)
         coords.update({"sliders": sliders})

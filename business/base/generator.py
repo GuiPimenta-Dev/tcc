@@ -15,19 +15,15 @@ class GeneratorBaseBusiness(BaseBusiness):
 
     def power_factor_update(self, model):
         self.__update_polar_params(model=model)
+        self._update_rectangular_params(model=model)
 
-        params = {
-            "polar": asdict(model.polar),
-            "rect": self.rectangular_params(model=model),
-        }
-
-        return self.get_coords(params=params)
+        return self._get_coords(model=model)
 
     def __update_polar_params(self, model):
-        model.Ia, model.theta = self.calculate_ia(model=model)
+        model.Ia, model.theta = self._calculate_ia(model=model)
         model.polar.Ia = (model.Ia, model.theta)
-        model.polar.RaIa = self.calculate_raia(model=model)
-        model.polar.jXsIa = self.calculate_jxsia(model=model)
+        model.polar.RaIa = self._calculate_raia(model=model)
+        model.polar.jXsIa = self._calculate_jxsia(model=model)
         model.polar.Ea = self.calculate_new_ea_and_delta(model=model)
 
     def calculate_new_delta(self, model):

@@ -12,16 +12,13 @@ class PowerFactor(MotorBaseBusiness):
             phase *= -1
 
         self.__update_polar_params(model=model, phase=phase)
+        self._update_rectangular_params(model=model)
 
-        params = {
-            "polar": asdict(model.polar),
-            "rect": self.rectangular_params(model=model),
-        }
-        return self.get_coords(params=params)
+        return self._get_coords(model=model)
 
     def __update_polar_params(self, model: MotorModel, phase: float):
         model.theta = phase
         model.polar.Ia = (model.Ia, model.theta)
         model.polar.Ea = self.calculate_ea(model=model)
-        model.polar.RaIa = self.calculate_raia(model=model)
-        model.polar.jXsIa = self.calculate_jxsia(model=model)
+        model.polar.RaIa = self._calculate_raia(model=model)
+        model.polar.jXsIa = self._calculate_jxsia(model=model)
