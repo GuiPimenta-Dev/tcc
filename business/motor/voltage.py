@@ -10,8 +10,6 @@ class Voltage(MotorBaseBusiness):
         self.__update_polar_params(model=model, voltage=voltage)
         self._update_rectangular_params(model=model)
 
-        # return self._get_coords(model=model)
-        # return self._get_ea_coords(model=model)
         return self._get_scaled_coords(model=model)
 
     def _max_voltage_update(self, model: MotorModel, settings_voltage: tuple, voltage: float):

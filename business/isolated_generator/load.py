@@ -28,4 +28,4 @@ class Load(GeneratorBaseBusiness):
         Ia = rect(model.polar.Ia[0], self.rad(model.polar.Ia[1]))
         Vt = Ea - model.Ra * Ia - model.Xs * Ia
 
-        return abs(Vt), self.degree(phase(Vt))
+        return abs(Vt), 0
