@@ -1,5 +1,4 @@
 from cmath import acos
-from dataclasses import asdict
 
 from business.base.motor import MotorBaseBusiness
 from models.motor import MotorModel
@@ -14,7 +13,7 @@ class PowerFactor(MotorBaseBusiness):
         self.__update_polar_params(model=model, phase=phase)
         self._update_rectangular_params(model=model)
 
-        return self._get_coords(model=model)
+        return self._get_scaled_coords(model=model)
 
     def __update_polar_params(self, model: MotorModel, phase: float):
         model.theta = phase

@@ -10,7 +10,13 @@ class Load(MotorBaseBusiness):
         self.__update_polar_params(model=model)
         self._update_rectangular_params(model=model)
 
-        return self._get_coords(model=model)
+        return self._get_scaled_coords(model=model)
+
+    def _max_load_update(self, model: MotorModel):
+        self.__calculate_new_delta(model=model)
+        self.__update_polar_params(model=model)
+        self._update_rectangular_params(model=model)
+        return model.rectangular
 
     def __calculate_new_delta(self, model: MotorModel):
         phase = (model.hp_load * abs(model.Z) * 1000) / (3 * model.Vt * model.polar.Ea[0])

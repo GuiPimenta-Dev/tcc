@@ -17,7 +17,7 @@ class GeneratorBaseBusiness(BaseBusiness):
         self.__update_polar_params(model=model)
         self._update_rectangular_params(model=model)
 
-        return self._get_coords(model=model)
+        return self._get_scaled_coords(model=model)
 
     def __update_polar_params(self, model):
         model.Ia, model.theta = self._calculate_ia(model=model)

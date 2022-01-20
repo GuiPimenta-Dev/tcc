@@ -12,7 +12,7 @@ class Load(GeneratorBaseBusiness):
         self.__update_polar_params(model)
         self._update_rectangular_params(model=model)
 
-        return self._get_coords(model=model)
+        return self._get_scaled_coords(model=model)
 
     def __calculate_new_Ea_delta(self, model: GeneratorModel):
         model.delta = self.degree(asin((model.Ia * abs(model.Xs)) / model.Ea))

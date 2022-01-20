@@ -14,7 +14,7 @@ class Voltage(GeneratorBaseBusiness):
         self.__update_polar_params(model=model)
         self._update_rectangular_params(model=model)
 
-        return self._get_coords(model=model)
+        return self._get_scaled_coords(model=model)
 
     def __calculate_new_Ia(self, model: GeneratorModel):
         Ia = polar(complex(model.Ea, 0) / (model.Z + model.Zl))

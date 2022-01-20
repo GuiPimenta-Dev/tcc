@@ -8,6 +8,7 @@ from .connected_generator.voltage import Voltage
 
 class ConnectedGenerator(Load, Voltage, PowerFactor):
     def get_settings_coords(self, model: GeneratorModel):
+        self._calculate_scale(model=model.rectangular)
         self._update_rectangular_params(model=model)
         coords = self._get_coords(model=model)
         initial_voltage = float(coords["labels"]["Ea"].split(" ")[0])
