@@ -19,7 +19,7 @@ class Load(MotorBaseBusiness):
         return model.rectangular
 
     def __calculate_new_delta(self, model: MotorModel):
-        phase = (model.hp_load * abs(model.Z) * 1000) / (3 * model.Vt * model.polar.Ea[0])
+        phase = (model.hp_load * abs(model.Xs) * 1000) / (3 * model.Vt * model.Ea)
         model.delta = self.degree(self.rad(-1 * self.degree(asin(phase))))
 
     def __update_polar_params(self, model: MotorModel):

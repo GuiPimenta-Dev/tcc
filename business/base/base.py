@@ -30,11 +30,11 @@ class BaseBusiness:
         if model.delta_star == "delta":
             module = module / sqrt(3)
 
-        phase = self.degree(acos(model.Fp))
-        if model.lead_lag == "lag" and phase != 0.0:
-            phase *= -1
+        theta = self.degree(acos(model.Fp))
+        if model.lead_lag == "lag" and theta != 0.0:
+            theta *= -1
 
-        return module, phase
+        return module, theta
 
     def _calculate_raia(self, model: Union[MachineModel, Any]):
         Ia = rect(model.Ia, self.rad(model.theta))
@@ -74,11 +74,11 @@ class BaseBusiness:
 
     def __get_labels(self, model: PolarModel):
         return {
-            "Vt": f'{self.round(model.Vt[0])} ∠ {self.round(model.Vt[1])}°',
-            "Ia": f'{self.round(model.Ia[0])} ∠ {self.round(model.Ia[1])}°',
-            "Ea": f'{self.round(model.Ea[0])} ∠ {self.round(model.Ea[1])}°',
-            "RaIa": f'{self.round(model.RaIa[0])} ∠ {self.round(model.RaIa[1])}°',
-            "jXsIa": f'{self.round(model.jXsIa[0])} ∠ {self.round(model.jXsIa[1])}°',
+            "Vt": f"{self.round(model.Vt[0])} ∠ {self.round(model.Vt[1])}°",
+            "Ia": f"{self.round(model.Ia[0])} ∠ {self.round(model.Ia[1])}°",
+            "Ea": f"{self.round(model.Ea[0])} ∠ {self.round(model.Ea[1])}°",
+            "RaIa": f"{self.round(model.RaIa[0])} ∠ {self.round(model.RaIa[1])}°",
+            "jXsIa": f"{self.round(model.jXsIa[0])} ∠ {self.round(model.jXsIa[1])}°",
         }
 
     @staticmethod

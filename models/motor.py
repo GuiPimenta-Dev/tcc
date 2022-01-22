@@ -25,14 +25,6 @@ class MotorModel(MotorBaseBusiness):
     polar: PolarModel = None
     rectangular: RectangularModel = None
 
-    @property
-    def Il(self):
-        return self.hp_load * 1000 / (sqrt(3) * self.Vt * self.Fp)
-
-    @property
-    def Z(self):
-        return self.Ra + self.Xs
-
     def __post_init__(self):
         self.Xs = complex(0, self.Xs)
         self.Ra = complex(self.Ra, 0)
@@ -41,3 +33,13 @@ class MotorModel(MotorBaseBusiness):
         self.Ea, self.delta = self.calculate_ea(model=self)
         self.polar = polar_params(model=self)
         self.rectangular = rectangular_params(model=self)
+
+    @property
+    def Il(self):
+        return self.hp_load * 1000 / (sqrt(3) * self.Vt * self.Fp)
+
+    @property
+    def Z(self):
+        return self.Ra + self.Xs
+
+

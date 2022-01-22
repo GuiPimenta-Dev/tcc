@@ -8,7 +8,6 @@ from .motor.voltage import Voltage
 class Motor(Load, Voltage, PowerFactor):
     def get_settings_coords(self, model: MotorModel) -> dict:
         self._calculate_scale(model=model.rectangular)
-
         self._update_rectangular_params(model=model)
         coords = self._get_scaled_coords(model=model)
         initial_voltage = float(coords["labels"]["Ea"].split(" ")[0])

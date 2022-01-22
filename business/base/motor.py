@@ -16,3 +16,4 @@ class MotorBaseBusiness(BaseBusiness):
         voltage_module = abs(Ea)
         voltage_phase = self.degree(phase(Ea))
         return (voltage_module, voltage_phase)
+
