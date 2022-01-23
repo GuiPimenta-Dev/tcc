@@ -14,9 +14,12 @@ class ConnectedGeneratorService(ConnectedGenerator):
         self.load.Ia = load
         return self.load_update(model=self.load)
 
+    # def update_ea(self, voltage: float):
+    #     self.voltage.Ea = voltage
+    #     return self.voltage_update(model=self.voltage)
+
     def update_ea(self, voltage: float):
-        self.voltage.Ea = voltage
-        return self.voltage_update(model=self.voltage)
+        return self.voltage_update(model=self.voltage, settings_voltage=self.voltage.polar.Ea, voltage=voltage)
 
     def update_fp(self, power_factor: float):
         self.power_factor.Fp = power_factor

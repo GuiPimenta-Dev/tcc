@@ -82,9 +82,9 @@ class Voltage(BaseMotor):
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
-        ea = voltage_parser.parse_args()["Ea"]
+        Ea = voltage_parser.parse_args()["Ea"]
         try:
-            return self.motor.update_ea(voltage=ea)
+            return self.motor.update_ea(voltage=Ea)
 
         except Exception as e:
             logger.info(str(e))

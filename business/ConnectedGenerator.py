@@ -18,7 +18,7 @@ class ConnectedGenerator(Load, Voltage, PowerFactor):
 
     def __get_sliders(self, model: GeneratorModel, initial_voltage: float):
         max_load = model.Ia * 1.5
-        min_ea = self.__calculate_slider_min_ea(model=model)
+        min_ea = self.__calculate_slider_min_ea(model=model,settings_voltage=model.polar.Ea)
         max_ea = model.VtN * 1.2
         return {
             "load": {"min": 0, "max": max_load, "value": model.Il},
@@ -26,12 +26,14 @@ class ConnectedGenerator(Load, Voltage, PowerFactor):
             "power_factor": {"min": 0, "max": 1, "value": model.Fp},
         }
 
-    def __calculate_slider_min_ea(self, model: GeneratorModel):
+    def __calculate_slider_min_ea(self, model: GeneratorModel, settings_voltage: tuple):
+        voltage, _ = settings_voltage
         while True:
             try:
-                self.voltage_update(model=model)
-                model.Ea -= 1
+                self.voltage_update(model=model, settings_voltage=settings_voltage, voltage=voltage)
+                voltage -= 1
             except ValueError:
                 break
 
-        return int(model.Ea) + 1
+        return int(voltage) + 1
+

@@ -19,7 +19,7 @@ connected_generator_parser.add_argument("VtN", required=False, type=float, locat
 connected_generator_parser.add_argument("Il", required=False, type=float, location="json", default=120)
 connected_generator_parser.add_argument("Fp", required=False, type=float, location="json", default=0.8)
 connected_generator_parser.add_argument("Xs", required=False, type=float, location="json", default=2.5)
-connected_generator_parser.add_argument("Ra", required=False, type=float, location="json", default=0)
+connected_generator_parser.add_argument("Ra", required=False, type=float, location="json", default=0.1)
 connected_generator_parser.add_argument("losses", required=False, type=float, location="json", default=70)
 connected_generator_parser.add_argument(
     "lead_lag",
@@ -35,7 +35,7 @@ connected_generator_parser.add_argument(
     type=str,
     location="json",
     choices=["delta", "star"],
-    default="star",
+    default="delta",
 )
 
 load_parser.add_argument("load", required=False, type=float, location="json", default=30)

@@ -12,12 +12,6 @@ class Voltage(MotorBaseBusiness):
 
         return self._get_scaled_coords(model=model)
 
-    def _max_voltage_update(self, model: MotorModel, settings_voltage: tuple, voltage: float):
-        self.__calculate_new_delta(model=model, settings_voltage=settings_voltage, voltage=voltage)
-        self.__update_polar_params(model=model, voltage=voltage)
-        self._update_rectangular_params(model=model)
-        return model.rectangular
-
     def __calculate_new_delta(self, model: MotorModel, settings_voltage: tuple, voltage: float):
         phase = (settings_voltage[0] / voltage) * sin(self.rad(settings_voltage[1]))
         model.delta = self.degree(asin(phase))
