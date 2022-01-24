@@ -1,6 +1,5 @@
 from cmath import polar
 from cmath import rect
-from dataclasses import asdict
 
 from business.base.generator import GeneratorBaseBusiness
 from models.generator import GeneratorModel
