@@ -18,7 +18,7 @@ class ConnectedGenerator(Load, Voltage, PowerFactor):
 
     def __get_sliders(self, model: GeneratorModel, initial_voltage: float):
         max_load = model.Ia * 1.5
-        min_ea = self.__calculate_slider_min_ea(model=model,settings_voltage=model.polar.Ea)
+        min_ea = self.__calculate_slider_min_ea(model=model, settings_voltage=model.polar.Ea)
         max_ea = model.VtN * 1.2
         return {
             "load": {"min": 0, "max": max_load, "value": model.Il},
@@ -36,4 +36,3 @@ class ConnectedGenerator(Load, Voltage, PowerFactor):
                 break
 
         return int(voltage) + 1
-

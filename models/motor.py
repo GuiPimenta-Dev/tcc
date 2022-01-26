@@ -41,5 +41,3 @@ class MotorModel(MotorBaseBusiness):
     @property
     def Z(self):
         return self.Ra + self.Xs
-
-
