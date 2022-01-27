@@ -55,7 +55,7 @@ class Settings(Resource):
         args = connected_generator_parser.parse_args()
         try:
             connected_generator = ConnectedGeneratorService(model=GeneratorModel(**args))
-            dump_model(model=connected_generator, machine='connected_generator')
+            dump_model(model=connected_generator, machine="connected_generator")
             return connected_generator.settings_coords
 
         except Exception as e:
@@ -71,7 +71,7 @@ class Load(Resource):
     def put(self):
         load = load_parser.parse_args()["load"]
         try:
-            connected_generator = load_model(machine='connected_generator')
+            connected_generator = load_model(machine="connected_generator")
             return connected_generator.update_load(load=load)
 
         except Exception as e:
@@ -87,7 +87,7 @@ class Voltage(Resource):
     def put(self):
         Ea = voltage_parser.parse_args()["Ea"]
         try:
-            connected_generator = load_model(machine='connected_generator')
+            connected_generator = load_model(machine="connected_generator")
             return connected_generator.update_ea(voltage=Ea)
 
         except Exception as e:
@@ -103,7 +103,7 @@ class PowerFactor(Resource):
     def put(self):
         fp = power_factor_parser.parse_args()["Fp"]
         try:
-            connected_generator = load_model(machine='connected_generator')
+            connected_generator = load_model(machine="connected_generator")
             return connected_generator.update_fp(power_factor=fp)
 
         except Exception as e:

@@ -55,7 +55,7 @@ class Settings(Resource):
         args = isolated_generator_parser.parse_args()
         try:
             isolated_generator = IsolatedGeneratorService(model=GeneratorModel(**args))
-            dump_model(model=isolated_generator, machine='isolated_generator')
+            dump_model(model=isolated_generator, machine="isolated_generator")
             return isolated_generator.settings_coords
 
         except Exception as e:
@@ -71,7 +71,7 @@ class Load(Resource):
     def put(self):
         load = load_parser.parse_args()["load"]
         try:
-            isolated_generator = load_model(machine='isolated_generator')
+            isolated_generator = load_model(machine="isolated_generator")
             return isolated_generator.update_load(load=load)
 
         except Exception as e:
@@ -87,7 +87,7 @@ class Voltage(Resource):
     def put(self):
         ea = voltage_parser.parse_args()["Ea"]
         try:
-            isolated_generator = load_model(machine='isolated_generator')
+            isolated_generator = load_model(machine="isolated_generator")
             return isolated_generator.update_ea(voltage=ea)
 
         except Exception as e:
@@ -103,7 +103,7 @@ class PowerFactor(Resource):
     def put(self):
         fp = power_factor_parser.parse_args()["Fp"]
         try:
-            isolated_generator = load_model(machine='isolated_generator')
+            isolated_generator = load_model(machine="isolated_generator")
             return isolated_generator.update_fp(power_factor=fp)
 
         except Exception as e:

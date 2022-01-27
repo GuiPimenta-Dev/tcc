@@ -1,5 +1,3 @@
-from dataclasses import asdict
-
 from models.generator import GeneratorModel
 from .connected_generator.load import Load
 from .connected_generator.power_factor import PowerFactor
@@ -21,7 +19,7 @@ class ConnectedGenerator(Load, Voltage, PowerFactor):
         min_ea = self.__calculate_slider_min_ea(model=model, settings_voltage=model.polar.Ea)
         max_ea = self.round(model.VtN * 1.2)
         return {
-            "load": {"min": 0, "max": max_load, "value": model.Il},
+            "load": {"min": 0, "max": max_load, "value": self.round(model.rectangular.Ia.real)},
             "voltage": {"min": min_ea, "max": max_ea, "value": initial_voltage},
             "power_factor": {"min": 0, "max": 1, "value": model.Fp},
         }

@@ -49,7 +49,7 @@ class Settings(Resource):
         args = motor_parser.parse_args()
         try:
             motor = MotorService(model=MotorModel(**args))
-            dump_model(model=motor, machine='motor')
+            dump_model(model=motor, machine="motor")
             return motor.settings_coords
 
         except Exception as e:
@@ -65,7 +65,7 @@ class Load(Resource):
     def put(self):
         load = load_parser.parse_args()["load"]
         try:
-            motor = load_model(machine='motor')
+            motor = load_model(machine="motor")
             return motor.update_load(load=load)
 
         except Exception as e:
@@ -81,7 +81,7 @@ class Voltage(Resource):
     def put(self):
         Ea = voltage_parser.parse_args()["Ea"]
         try:
-            motor = load_model(machine='motor')
+            motor = load_model(machine="motor")
             return motor.update_ea(voltage=Ea)
 
         except Exception as e:
@@ -97,7 +97,7 @@ class PowerFactor(Resource):
     def put(self):
         fp = power_factor_parser.parse_args()["Fp"]
         try:
-            motor = load_model(machine='motor')
+            motor = load_model(machine="motor")
             return motor.update_fp(power_factor=fp)
 
         except Exception as e:
