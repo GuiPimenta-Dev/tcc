@@ -17,8 +17,8 @@ class IsolatedGenerator(Load, Voltage, PowerFactor):
         return coords
 
     def __get_sliders(self, model: GeneratorModel, initial_voltage: float):
-        max_load = model.Ia * GeneratorTuple.MAX_LOAD
-        max_ea = model.VtN * GeneratorTuple.MAX_EA
+        max_load = self.round(model.Ia * GeneratorTuple.MAX_LOAD)
+        max_ea = self.round(model.VtN * GeneratorTuple.MAX_EA)
         return {
             "load": {"min": 0, "max": max_load, "value": model.Ia},
             "voltage": {"min": 1, "max": max_ea, "value": initial_voltage},
