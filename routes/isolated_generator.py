@@ -3,6 +3,7 @@ from flask_restx import Resource, Namespace, reqparse
 
 from models.generator import GeneratorModel
 from app import logger
+from routes import dump_model, load_model
 from services.isolated_generator import IsolatedGeneratorService
 from utils.constants import ISOLATED_GENERATOR_ROUTE_PREFIX
 
@@ -45,24 +46,17 @@ voltage_parser.add_argument("Ea", required=False, type=float, location="json", d
 power_factor_parser.add_argument("Fp", required=False, type=float, location="json", default=1)
 
 
-class BaseIsolatedGenerator(Resource):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def create_isolated_generator(self, model: GeneratorModel):
-        BaseIsolatedGenerator.isolated_generator = IsolatedGeneratorService(model=model)
-
-
 @nms.route("")
-class Settings(BaseIsolatedGenerator):
+class Settings(Resource):
     @nms.expect(isolated_generator_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def post(self):
         args = isolated_generator_parser.parse_args()
         try:
-            self.create_isolated_generator(model=GeneratorModel(**args))
-            return self.isolated_generator.settings_coords
+            isolated_generator = IsolatedGeneratorService(model=GeneratorModel(**args))
+            dump_model(model=isolated_generator, machine='isolated_generator')
+            return isolated_generator.settings_coords
 
         except Exception as e:
             logger.info(str(e))
@@ -70,14 +64,15 @@ class Settings(BaseIsolatedGenerator):
 
 
 @nms.route("/load")
-class Load(BaseIsolatedGenerator):
+class Load(Resource):
     @nms.expect(load_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         load = load_parser.parse_args()["load"]
         try:
-            return self.isolated_generator.update_load(load=load)
+            isolated_generator = load_model(machine='isolated_generator')
+            return isolated_generator.update_load(load=load)
 
         except Exception as e:
             logger.info(str(e))
@@ -85,14 +80,15 @@ class Load(BaseIsolatedGenerator):
 
 
 @nms.route("/voltage")
-class Voltage(BaseIsolatedGenerator):
+class Voltage(Resource):
     @nms.expect(voltage_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         ea = voltage_parser.parse_args()["Ea"]
         try:
-            return self.isolated_generator.update_ea(voltage=ea)
+            isolated_generator = load_model(machine='isolated_generator')
+            return isolated_generator.update_ea(voltage=ea)
 
         except Exception as e:
             logger.info(str(e))
@@ -100,14 +96,15 @@ class Voltage(BaseIsolatedGenerator):
 
 
 @nms.route("/power_factor")
-class PowerFactor(BaseIsolatedGenerator):
+class PowerFactor(Resource):
     @nms.expect(power_factor_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         fp = power_factor_parser.parse_args()["Fp"]
         try:
-            return self.isolated_generator.update_fp(power_factor=fp)
+            isolated_generator = load_model(machine='isolated_generator')
+            return isolated_generator.update_fp(power_factor=fp)
 
         except Exception as e:
             logger.info(str(e))

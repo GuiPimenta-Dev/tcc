@@ -3,6 +3,7 @@ from flask_restx import Resource, Namespace, reqparse
 from models.generator import GeneratorModel
 
 from app import logger
+from routes import dump_model, load_model
 from services.connected_generator import ConnectedGeneratorService
 from utils.constants import CONNECTED_GENERATOR_ROUTE_PREFIX
 
@@ -45,24 +46,17 @@ voltage_parser.add_argument("Ea", required=False, type=float, location="json", d
 power_factor_parser.add_argument("Fp", required=False, type=float, location="json", default=1)
 
 
-class BaseConnectedGenerator(Resource):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def create_connected_generator(self, model: GeneratorModel):
-        BaseConnectedGenerator.connected_generator = ConnectedGeneratorService(model=model)
-
-
 @nms.route("")
-class Settings(BaseConnectedGenerator):
+class Settings(Resource):
     @nms.expect(connected_generator_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def post(self):
         args = connected_generator_parser.parse_args()
         try:
-            self.create_connected_generator(model=GeneratorModel(**args))
-            return self.connected_generator.settings_coords
+            connected_generator = ConnectedGeneratorService(model=GeneratorModel(**args))
+            dump_model(model=connected_generator, machine='connected_generator')
+            return connected_generator.settings_coords
 
         except Exception as e:
             logger.info(str(e))
@@ -70,14 +64,15 @@ class Settings(BaseConnectedGenerator):
 
 
 @nms.route("/load")
-class Load(BaseConnectedGenerator):
+class Load(Resource):
     @nms.expect(load_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         load = load_parser.parse_args()["load"]
         try:
-            return self.connected_generator.update_load(load=load)
+            connected_generator = load_model(machine='connected_generator')
+            return connected_generator.update_load(load=load)
 
         except Exception as e:
             logger.info(str(e))
@@ -85,14 +80,15 @@ class Load(BaseConnectedGenerator):
 
 
 @nms.route("/voltage")
-class Voltage(BaseConnectedGenerator):
+class Voltage(Resource):
     @nms.expect(voltage_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         Ea = voltage_parser.parse_args()["Ea"]
         try:
-            return self.connected_generator.update_ea(voltage=Ea)
+            connected_generator = load_model(machine='connected_generator')
+            return connected_generator.update_ea(voltage=Ea)
 
         except Exception as e:
             logger.info(str(e))
@@ -100,14 +96,15 @@ class Voltage(BaseConnectedGenerator):
 
 
 @nms.route("/power_factor")
-class PowerFactor(BaseConnectedGenerator):
+class PowerFactor(Resource):
     @nms.expect(power_factor_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         fp = power_factor_parser.parse_args()["Fp"]
         try:
-            return self.connected_generator.update_fp(power_factor=fp)
+            connected_generator = load_model(machine='connected_generator')
+            return connected_generator.update_fp(power_factor=fp)
 
         except Exception as e:
             logger.info(str(e))

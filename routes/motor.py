@@ -1,3 +1,5 @@
+import pickle
+
 from flask import Blueprint
 from flask_restx import Resource, Namespace, reqparse
 
@@ -5,6 +7,7 @@ from app import logger
 from services.motor import MotorService
 from utils.constants import MOTOR_ROUTE_PREFIX
 from models.motor import MotorModel
+from . import dump_model, load_model
 
 bp = Blueprint("motor", __name__, url_prefix=MOTOR_ROUTE_PREFIX)
 nms = Namespace("Motor")
@@ -37,24 +40,17 @@ voltage_parser.add_argument("Ea", required=False, type=float, location="json", d
 power_factor_parser.add_argument("Fp", required=False, type=float, location="json", default=1)
 
 
-class BaseMotor(Resource):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def create_motor(self, model: MotorModel):
-        BaseMotor.motor = MotorService(model=model)
-
-
 @nms.route("")
-class Settings(BaseMotor):
+class Settings(Resource):
     @nms.expect(motor_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def post(self):
         args = motor_parser.parse_args()
         try:
-            self.create_motor(model=MotorModel(**args))
-            return self.motor.settings_coords
+            motor = MotorService(model=MotorModel(**args))
+            dump_model(model=motor, machine='motor')
+            return motor.settings_coords
 
         except Exception as e:
             logger.info(str(e))
@@ -62,14 +58,15 @@ class Settings(BaseMotor):
 
 
 @nms.route("/load")
-class Load(BaseMotor):
+class Load(Resource):
     @nms.expect(load_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         load = load_parser.parse_args()["load"]
         try:
-            return self.motor.update_load(load=load)
+            motor = load_model(machine='motor')
+            return motor.update_load(load=load)
 
         except Exception as e:
             logger.info(str(e))
@@ -77,14 +74,15 @@ class Load(BaseMotor):
 
 
 @nms.route("/voltage")
-class Voltage(BaseMotor):
+class Voltage(Resource):
     @nms.expect(voltage_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         Ea = voltage_parser.parse_args()["Ea"]
         try:
-            return self.motor.update_ea(voltage=Ea)
+            motor = load_model(machine='motor')
+            return motor.update_ea(voltage=Ea)
 
         except Exception as e:
             logger.info(str(e))
@@ -92,14 +90,15 @@ class Voltage(BaseMotor):
 
 
 @nms.route("/power_factor")
-class PowerFactor(BaseMotor):
+class PowerFactor(Resource):
     @nms.expect(power_factor_parser)
     @nms.response(200, "Success")
     @nms.response(400, "Bad Request")
     def put(self):
         fp = power_factor_parser.parse_args()["Fp"]
         try:
-            return self.motor.update_fp(power_factor=fp)
+            motor = load_model(machine='motor')
+            return motor.update_fp(power_factor=fp)
 
         except Exception as e:
             logger.info(str(e))
